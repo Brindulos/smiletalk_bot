@@ -44,7 +44,8 @@ def analyser_reponse(user_response, row):
     if solutionnable and not contient_mots(user_response, formulations_douces + formules_finales):
         feedback.append("💡 La solution devrait être proposée de façon douce et terminer par une question (‘OK pour vous ?’).")
 
-    if not solutionnable and "je n'ai malheureusement pas" not in user_response:
+   if not solutionnable:
+    if not contient_mots(user_response, ["désolé", "malheureusement", "je n’ai pas", "je suis embêté", "c’est compliqué"]):
         feedback.append("🧱 Ce litige n’a pas de solution : il faut le dire honnêtement, avec tact.")
 
     # Similarité avec la bonne réponse (à titre indicatif)
