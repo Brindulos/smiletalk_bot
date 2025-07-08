@@ -15,11 +15,13 @@ def analyser_reponse(user_response, row):
 
     feedback = []
     bonne_reponse = nettoyer(row['bonne-reponse'])
-    
+
+    # 🔧 Correction : ligne bien indentée ici
     solution_text = str(row['solution']).strip().lower().replace("’", "'").replace(" ", " ").replace(" ", "")
-    solutionnable = solution_text == "oui"  # <- Cette ligne était mal indentée
+    solutionnable = solution_text == "oui"
 
     info_op = row['informations opérationnelles']
+
     
     marqueurs_empathie = ["désolé", "navré", "je comprends", "vraiment désolé", "vraiment navré", "bien sûr", "mince", "c'est embetant"]
     mots_conflit = ["mais", "en revanche", "par contre", "néanmoins", "toutefois"]
