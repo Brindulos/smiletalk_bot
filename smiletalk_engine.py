@@ -1,11 +1,15 @@
 import random
 import pandas as pd
 import difflib
+import unicodedata
 
 df = pd.read_csv("SITUATIONS.csv", sep=";")
 
 def nettoyer(texte):
     return texte.lower().replace("’", "'").strip()
+
+def normaliser(texte):
+    return unicodedata.normalize("NFKD", texte).encode("ascii", "ignore").decode("utf-8").strip().lower()
 
 def contient_mots(texte, mots):
     return any(m in texte for m in mots)
@@ -16,19 +20,11 @@ def analyser_reponse(user_response, row):
     feedback = []
     bonne_reponse = nettoyer(row['bonne-reponse'])
 
-    # 🔧 Correction : ligne bien indentée ici
-    import unicodedata
-
-def normaliser(texte):
-    return unicodedata.normalize("NFKD", texte).encode("ascii", "ignore").decode("utf-8").strip().lower()
-
-solution_text = normaliser(str(row['solution']))
-solutionnable = "oui" in solution_text
-
+    solution_text = normaliser(str(row['solution']))
+    solutionnable = "oui" in solution_text
 
     info_op = row['informations opérationnelles']
 
-    
     marqueurs_empathie = ["désolé", "navré", "je comprends", "vraiment désolé", "vraiment navré", "bien sûr", "mince", "c'est embetant"]
     mots_conflit = ["mais", "en revanche", "par contre", "néanmoins", "toutefois"]
     mots_adoucis = ["maintenant", "après", "justement"]
