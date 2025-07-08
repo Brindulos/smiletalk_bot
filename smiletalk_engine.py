@@ -41,13 +41,12 @@ def analyser_reponse(user_response, row):
     if contient_mots(user_response, formes_imperatives):
         feedback.append("📏 Attention à ne pas imposer la solution (‘il faut’, ‘vous n’avez qu’à’…). Propose-la avec tact.")
     
-        if solutionnable:
+    if solutionnable:
         if not contient_mots(user_response, formulations_douces + formules_finales):
             feedback.append("💡 La solution devrait être proposée de façon douce et terminer par une question (‘OK pour vous ?’).")
     else:
         if not contient_mots(user_response, ["désolé", "malheureusement", "je n’ai pas", "je suis embêté", "c’est compliqué"]):
             feedback.append("🧱 Ce litige n’a pas de solution : il faut le dire honnêtement, avec tact.")
-
 
    if not solutionnable:
     if not contient_mots(user_response, ["désolé", "malheureusement", "je n’ai pas", "je suis embêté", "c’est compliqué"]):
