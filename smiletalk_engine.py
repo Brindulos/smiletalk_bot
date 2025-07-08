@@ -15,8 +15,9 @@ def analyser_reponse(user_response, row):
 
     feedback = []
     bonne_reponse = nettoyer(row['bonne-reponse'])
+    
     solution_text = str(row['solution']).strip().lower().replace("’", "'").replace(" ", " ").replace(" ", "")
-solutionnable = solution_text == "oui"
+    solutionnable = solution_text == "oui"  # <- Cette ligne était mal indentée
 
     info_op = row['informations opérationnelles']
     
