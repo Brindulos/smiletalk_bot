@@ -2,7 +2,7 @@ import random
 import pandas as pd
 import difflib
 
-df = pd.read_csv("SITUATIONS.csv")
+df = pd.read_csv("SITUATIONS.csv", sep=";")
 
 def nettoyer(texte):
     return texte.lower().replace("’", "'").strip()
