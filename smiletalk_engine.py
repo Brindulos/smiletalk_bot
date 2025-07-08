@@ -15,7 +15,9 @@ def analyser_reponse(user_response, row):
 
     feedback = []
     bonne_reponse = nettoyer(row['bonne-reponse'])
-    solutionnable = row['solution'].strip().lower() == 'oui'
+    solution_text = str(row['solution']).strip().lower().replace("’", "'").replace(" ", " ").replace(" ", "")
+solutionnable = solution_text == "oui"
+
     info_op = row['informations opérationnelles']
     
     marqueurs_empathie = ["désolé", "navré", "je comprends", "vraiment désolé", "vraiment navré", "bien sûr", "mince", "c'est embetant"]
