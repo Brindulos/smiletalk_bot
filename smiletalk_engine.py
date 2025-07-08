@@ -17,8 +17,14 @@ def analyser_reponse(user_response, row):
     bonne_reponse = nettoyer(row['bonne-reponse'])
 
     # 🔧 Correction : ligne bien indentée ici
-    solution_text = str(row['solution']).strip().lower().replace("’", "'").replace(" ", " ").replace(" ", "")
-    solutionnable = solution_text == "oui"
+    import unicodedata
+
+def normaliser(texte):
+    return unicodedata.normalize("NFKD", texte).encode("ascii", "ignore").decode("utf-8").strip().lower()
+
+solution_text = normaliser(str(row['solution']))
+solutionnable = "oui" in solution_text
+
 
     info_op = row['informations opérationnelles']
 
