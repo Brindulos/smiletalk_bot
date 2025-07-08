@@ -48,10 +48,6 @@ def analyser_reponse(user_response, row):
         if not contient_mots(user_response, ["désolé", "malheureusement", "je n’ai pas", "je suis embêté", "c’est compliqué"]):
             feedback.append("🧱 Ce litige n’a pas de solution : il faut le dire honnêtement, avec tact.")
 
-   if not solutionnable:
-    if not contient_mots(user_response, ["désolé", "malheureusement", "je n’ai pas", "je suis embêté", "c’est compliqué"]):
-        feedback.append("🧱 Ce litige n’a pas de solution : il faut le dire honnêtement, avec tact.")
-
     # Similarité avec la bonne réponse (à titre indicatif)
     score = difflib.SequenceMatcher(None, user_response, bonne_reponse).ratio()
     feedback.append(f"🧠 Similitude avec la bonne réponse : {int(score*100)}%")
