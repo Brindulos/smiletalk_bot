@@ -6,7 +6,7 @@ import time
 from collections import defaultdict
 
 # Dictionnaire pour stocker les situations envoyées par utilisateur
-user_sessions = defaultdict(dict)
+user_sessions = {}
 
 TOKEN = "8075264265:AAHojOOYSZJB3s9ahH2sYi2_c3ZbFo6SUNY"  # 🔒 Pense à ne pas laisser ton token visible publiquement !
 WEBHOOK_URL = "https://smiletalk-bot-1.onrender.com/webhook"
@@ -34,10 +34,10 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     session = user_sessions.get(user_id)
 
-    # Si aucun scénario trouvé ou trop ancien (>5 min), on redemande un /entrainement
-    if not session or (time.time() - session["timestamp"] > 300):
-        await update.message.reply_text("👉 Commence par envoyer la commande /entrainement pour recevoir une situation.")
-        return
+if session is None or "timestamp" not in session or (time.time() - session["timestamp"] > 300):
+    await update.message.reply_text("👉 Commence par envoyer la commande /entrainement pour recevoir une situation.")
+    return
+
 
     row = session["row"]
     del user_sessions[user_id]  # on nettoie après la réponse
