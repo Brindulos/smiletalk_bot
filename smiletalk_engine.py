@@ -18,7 +18,7 @@ def analyser_reponse(user_response, row):
     solutionnable = row['solution'].strip().lower() == 'oui'
     info_op = row['informations opérationnelles']
     
-    marqueurs_empathie = ["désolé", "navré", "je comprends", "vraiment désolé", "vraiment navré", "bien sûr"]
+    marqueurs_empathie = ["désolé", "navré", "je comprends", "vraiment désolé", "vraiment navré", "bien sûr", "mince", "c'est embetant"]
     mots_conflit = ["mais", "en revanche", "par contre", "néanmoins", "toutefois"]
     mots_adoucis = ["maintenant", "après", "justement"]
     formes_imperatives = ["il faut", "vous n'avez qu'à", "il suffit de"]
