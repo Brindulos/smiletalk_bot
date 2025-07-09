@@ -4,20 +4,17 @@ from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, Con
 from smiletalk_engine import df, analyser_reponse
 import time
 
-# Dictionnaire pour stocker les situations envoyées par utilisateur
 user_sessions = {}
 
-TOKEN = "8075264265:AAHojOOYSZJB3s9ahH2sYi2_c3ZbFo6SUNY"  # 🔒 À masquer pour production
+TOKEN = "TON_TOKEN_ICI"  # 🔒 à remplacer par ton token
 WEBHOOK_URL = "https://smiletalk-bot-1.onrender.com/webhook"
 
 app = FastAPI()
 bot_app = ApplicationBuilder().token(TOKEN).build()
 
-# Commande /start
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Bienvenue dans le Smile Talk Training Bot !")
 
-# Commande /entrainement
 async def entrainement(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     row = df.sample(1).iloc[0]
@@ -28,7 +25,6 @@ async def entrainement(update: Update, context: ContextTypes.DEFAULT_TYPE):
     }
     await update.message.reply_text(f"🎯 Situation à traiter ({row['public']}):\n\n{row['situation']}")
 
-# Réponse utilisateur
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     session = user_sessions.get(user_id)
@@ -39,39 +35,44 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     row = session["row"]
     relance_envoyee = session.get("relance_envoyee", False)
-    relance = str(row.get("relance", "")).strip()
 
-    # Si relance déjà envoyée → feedback sur la relance
-    if relance_envoyee:
-        row["relance_utilisee"] = True
-        texte_de_reference = relance
-    else:
-        texte_de_reference = row['situation']
+    # Choix du texte de référence
+    texte_de_reference = row["relance"] if relance_envoyee and isinstance(row.get("relance"), str) and row["relance"].strip() else row["situation"]
 
-    # Appel à l'analyse avec la bonne base de comparaison
-    feedback_list, feedback_ideal, info_op = analyser_reponse(update.message.text, row, texte_de_reference)
+    feedback_list, bonne_reponse, info_op = analyser_reponse(update.message.text, row, texte_de_reference)
     feedback = "\n".join(feedback_list)
 
-    await update.message.reply_text(
-        f"📋 Voici ton feedback pédagogique :\n{feedback}\n\n"
-        f"💬 Exemple attendu :\n{row['bonne-reponse']}\n\n"
-        f"ℹ️ Info opérationnelle :\n{info_op}"
-    )
-
-    # 🔁 Envoie la relance si elle existe et pas encore envoyée
-    if relance and not relance_envoyee:
-        await update.message.reply_text(f"🙋‍♂️ Le spectateur insiste :\n\n\"{relance}\"")
-        session["relance_envoyee"] = True
+    # Sélection de l'exemple attendu en fonction de la relance
+    if relance_envoyee and isinstance(row.get("bonne-reponse-relance"), str) and row["bonne-reponse-relance"].strip():
+        exemple_attendu = row["bonne-reponse-relance"]
     else:
-        # Fin de session si relance déjà faite ou absente
-        user_sessions.pop(user_id, None)
+        exemple_attendu = row["bonne-reponse"]
 
-# 🎯 Brancher les handlers à l'app Telegram
+    if relance_envoyee:
+        await update.message.reply_text(
+            f"📋 Voici ton 2e feedback pédagogique (sur la relance) :\n{feedback}\n\n"
+            f"💬 Exemple attendu :\n{exemple_attendu}"
+        )
+        user_sessions.pop(user_id, None)  # Session terminée
+    else:
+        await update.message.reply_text(
+            f"📋 Voici ton feedback pédagogique :\n{feedback}\n\n"
+            f"💬 Exemple attendu :\n{exemple_attendu}\n\n"
+            f"ℹ️ Info opérationnelle :\n{info_op}"
+        )
+        relance = str(row.get("relance", "")).strip()
+        if relance:
+            session["relance_envoyee"] = True
+            await update.message.reply_text(f"🙋‍♂️ Le spectateur insiste :\n\n\"{relance}\"")
+        else:
+            user_sessions.pop(user_id, None)
+
+# Handlers
 bot_app.add_handler(CommandHandler("start", start))
 bot_app.add_handler(CommandHandler("entrainement", entrainement))
 bot_app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
-# 🌐 Route webhook pour Telegram
+# Webhook
 @app.post("/webhook")
 async def telegram_webhook(request: Request):
     data = await request.json()
@@ -79,7 +80,6 @@ async def telegram_webhook(request: Request):
     await bot_app.process_update(update)
     return {"status": "ok"}
 
-# 🚀 Démarrage du bot
 @app.on_event("startup")
 async def startup():
     await bot_app.initialize()
@@ -88,8 +88,5 @@ async def startup():
     print("✅ Bot démarré avec webhook")
 
 @app.on_event("shutdown")
-async def shutdown():
-    await bot_app.stop()
-
 async def shutdown():
     await bot_app.stop()
