@@ -39,7 +39,6 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     row = session["row"]
-    del user_sessions[user_id]  # on nettoie après la réponse
 
     feedback_list, feedback_ideal, info_op = analyser_reponse(update.message.text, row)
     feedback = "\n".join(feedback_list)
@@ -52,8 +51,13 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # 🔁 Relance automatique si disponible
     relance = str(row.get("relance", "")).strip()
-    if relance:
+    if relance and not session.get("relance_envoyee", False):
         await update.message.reply_text(f"🙋‍♂️ Le spectateur insiste :\n\n\"{relance}\"")
+        session["relance_envoyee"] = True
+    else:
+        # Fin de la session si relance déjà faite ou absente
+        del user_sessions[user_id]
+
 
 # 🎯 Brancher les handlers à l'app Telegram
 bot_app.add_handler(CommandHandler("start", start))
