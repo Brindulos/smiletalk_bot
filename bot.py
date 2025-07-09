@@ -6,7 +6,7 @@ import time
 
 user_sessions = {}
 
-TOKEN = "TON_TOKEN_ICI"  # 🔒 à remplacer par ton token
+TOKEN = "8075264265:AAHojOOYSZJB3s9ahH2sYi2_c3ZbFo6SUNY"  # 🔒 à remplacer par ton token
 WEBHOOK_URL = "https://smiletalk-bot-1.onrender.com/webhook"
 
 app = FastAPI()
