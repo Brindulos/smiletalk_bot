@@ -1,7 +1,8 @@
 import random
 import pandas as pd
-import difflib
 import unicodedata
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 df = pd.read_csv("SITUATIONS.csv", sep=";")
 
@@ -13,6 +14,10 @@ def normaliser(texte):
 
 def contient_mots(texte, mots):
     return any(m in texte for m in mots)
+
+def similarite_reformulation(texte1, texte2):
+    vect = CountVectorizer().fit_transform([texte1, texte2])
+    return cosine_similarity(vect[0], vect[1])[0][0]
 
 def analyser_reponse(user_response, row):
     user_response = nettoyer(user_response)
@@ -36,10 +41,11 @@ def analyser_reponse(user_response, row):
     if not contient_mots(user_response, marqueurs_empathie):
         feedback.append("🙁 Il manque une expression d’empathie explicite (‘désolé’, ‘je comprends’…).")
     
-    # Vérifie reformulation (rudimentaire)
-    if not any(mot in user_response for mot in nettoyer(row['situation']).split()[:5]):
+    # Vérifie reformulation plus souple
+    similarite = similarite_reformulation(user_response, nettoyer(row['situation']))
+    if similarite < 0.2:
         feedback.append("🔁 La situation n’est pas reformulée : essaye de montrer que tu as compris ce que vit le spectateur.")
-    
+
     # Vérifie mots de confrontation
     if contient_mots(user_response, mots_conflit):
         feedback.append("⚠️ Tu utilises des mots de confrontation (‘mais’, ‘par contre’…). Essaie plutôt ‘après’, ‘justement’…")
@@ -54,9 +60,5 @@ def analyser_reponse(user_response, row):
     else:
         if not contient_mots(user_response, ["désolé", "malheureusement", "je n’ai pas", "je suis embêté", "c’est compliqué"]):
             feedback.append("🧱 Ce litige n’a pas de solution : il faut le dire honnêtement, avec tact.")
-
-    # Similarité avec la bonne réponse (à titre indicatif)
-    score = difflib.SequenceMatcher(None, user_response, bonne_reponse).ratio()
-    feedback.append(f"🧠 Similitude avec la bonne réponse : {int(score*100)}%")
 
     return feedback, row["feedback"], info_op
