@@ -4,7 +4,7 @@ import unicodedata
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-df = pd.read_csv("SITUATIONS.csv", sep=";", encoding="ISO-8859-1")
+df = pd.read_csv("SITUATIONS.csv", sep=";")
 
 def nettoyer(texte):
     return texte.lower().replace("’", "'").strip()
