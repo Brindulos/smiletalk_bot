@@ -7,7 +7,7 @@ import time
 # Dictionnaire pour stocker les situations envoyées par utilisateur
 user_sessions = {}
 
-TOKEN = "8075264265:AAHojOOYSZJB3s9ahH2sYi2_c3ZbFo6SUNY"  # 🔒 Pense à masquer ce token
+TOKEN = "8075264265:AAHojOOYSZJB3s9ahH2sYi2_c3ZbFo6SUNY"  # 🔒 À masquer pour production
 WEBHOOK_URL = "https://smiletalk-bot-1.onrender.com/webhook"
 
 app = FastAPI()
@@ -23,7 +23,8 @@ async def entrainement(update: Update, context: ContextTypes.DEFAULT_TYPE):
     row = df.sample(1).iloc[0]
     user_sessions[user_id] = {
         "row": row,
-        "timestamp": time.time()
+        "timestamp": time.time(),
+        "relance_envoyee": False
     }
     await update.message.reply_text(f"🎯 Situation à traiter ({row['public']}):\n\n{row['situation']}")
 
@@ -37,15 +38,18 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     row = session["row"]
+    relance_envoyee = session.get("relance_envoyee", False)
+    relance = str(row.get("relance", "")).strip()
 
-    # Si la relance a déjà été envoyée, c’est la 2e réponse → marquer que la relance est utilisée
-    if session.get("relance_envoyee", False):
+    # Si relance déjà envoyée → feedback sur la relance
+    if relance_envoyee:
         row["relance_utilisee"] = True
-        del user_sessions[user_id]  # Nettoyage de session après la 2e réponse
+        texte_de_reference = relance
     else:
-        user_sessions[user_id]["relance_envoyee"] = True  # Prépare pour la suite
+        texte_de_reference = row['situation']
 
-    feedback_list, feedback_ideal, info_op = analyser_reponse(update.message.text, row)
+    # Appel à l'analyse avec la bonne base de comparaison
+    feedback_list, feedback_ideal, info_op = analyser_reponse(update.message.text, row, texte_de_reference)
     feedback = "\n".join(feedback_list)
 
     await update.message.reply_text(
@@ -54,13 +58,12 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"ℹ️ Info opérationnelle :\n{info_op}"
     )
 
-    # 🔁 Relance automatique si disponible et non encore envoyée
-    relance = str(row.get("relance", "")).strip()
-    if relance and not session.get("relance_envoyee", False):
+    # 🔁 Envoie la relance si elle existe et pas encore envoyée
+    if relance and not relance_envoyee:
         await update.message.reply_text(f"🙋‍♂️ Le spectateur insiste :\n\n\"{relance}\"")
         session["relance_envoyee"] = True
     else:
-        # Fin de la session si relance déjà faite ou absente
+        # Fin de session si relance déjà faite ou absente
         user_sessions.pop(user_id, None)
 
 # 🎯 Brancher les handlers à l'app Telegram
@@ -85,5 +88,8 @@ async def startup():
     print("✅ Bot démarré avec webhook")
 
 @app.on_event("shutdown")
+async def shutdown():
+    await bot_app.stop()
+
 async def shutdown():
     await bot_app.stop()
