@@ -34,23 +34,26 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     session = user_sessions.get(user_id)
 
-if session is None or "timestamp" not in session or (time.time() - session["timestamp"] > 300):
-    await update.message.reply_text("👉 Commence par envoyer la commande /entrainement pour recevoir une situation.")
-    return
-
+    if session is None or "timestamp" not in session or (time.time() - session["timestamp"] > 300):
+        await update.message.reply_text("👉 Commence par envoyer la commande /entrainement pour recevoir une situation.")
+        return
 
     row = session["row"]
     del user_sessions[user_id]  # on nettoie après la réponse
 
     feedback_list, feedback_ideal, info_op = analyser_reponse(update.message.text, row)
     feedback = "\n".join(feedback_list)
-    
+
     await update.message.reply_text(
         f"📋 Voici ton feedback pédagogique :\n{feedback}\n\n"
         f"💬 Exemple attendu :\n{row['bonne-reponse']}\n\n"
         f"ℹ️ Info opérationnelle :\n{info_op}"
     )
 
+    # 🔁 Relance automatique si disponible
+    relance = str(row.get("relance", "")).strip()
+    if relance:
+        await update.message.reply_text(f"🙋‍♂️ Le spectateur insiste :\n\n\"{relance}\"")
 
 # 🎯 Brancher les handlers à l'app Telegram
 bot_app.add_handler(CommandHandler("start", start))
