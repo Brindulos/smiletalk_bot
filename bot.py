@@ -3,12 +3,11 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
 from smiletalk_engine import df, analyser_reponse
 import time
-from collections import defaultdict
 
 # Dictionnaire pour stocker les situations envoyées par utilisateur
 user_sessions = {}
 
-TOKEN = "8075264265:AAHojOOYSZJB3s9ahH2sYi2_c3ZbFo6SUNY"  # 🔒 Pense à ne pas laisser ton token visible publiquement !
+TOKEN = "8075264265:AAHojOOYSZJB3s9ahH2sYi2_c3ZbFo6SUNY"  # 🔒 Pense à masquer ce token
 WEBHOOK_URL = "https://smiletalk-bot-1.onrender.com/webhook"
 
 app = FastAPI()
@@ -28,7 +27,6 @@ async def entrainement(update: Update, context: ContextTypes.DEFAULT_TYPE):
     }
     await update.message.reply_text(f"🎯 Situation à traiter ({row['public']}):\n\n{row['situation']}")
 
-
 # Réponse utilisateur
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
@@ -40,6 +38,13 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     row = session["row"]
 
+    # Si la relance a déjà été envoyée, c’est la 2e réponse → marquer que la relance est utilisée
+    if session.get("relance_envoyee", False):
+        row["relance_utilisee"] = True
+        del user_sessions[user_id]  # Nettoyage de session après la 2e réponse
+    else:
+        user_sessions[user_id]["relance_envoyee"] = True  # Prépare pour la suite
+
     feedback_list, feedback_ideal, info_op = analyser_reponse(update.message.text, row)
     feedback = "\n".join(feedback_list)
 
@@ -49,15 +54,14 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"ℹ️ Info opérationnelle :\n{info_op}"
     )
 
-    # 🔁 Relance automatique si disponible
+    # 🔁 Relance automatique si disponible et non encore envoyée
     relance = str(row.get("relance", "")).strip()
     if relance and not session.get("relance_envoyee", False):
         await update.message.reply_text(f"🙋‍♂️ Le spectateur insiste :\n\n\"{relance}\"")
         session["relance_envoyee"] = True
     else:
         # Fin de la session si relance déjà faite ou absente
-        del user_sessions[user_id]
-
+        user_sessions.pop(user_id, None)
 
 # 🎯 Brancher les handlers à l'app Telegram
 bot_app.add_handler(CommandHandler("start", start))
