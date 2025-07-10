@@ -1,98 +1,57 @@
-from fastapi import FastAPI, Request
-from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
-from smiletalk_engine import df, analyser_reponse_chatgpt as analyser_reponse
-import time
 import os
-import sys
+import pandas as pd
+from openai import OpenAI
 
-# --- Configuration initiale ---
-TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")  # 🔐 Définie dans .env ou Render
-WEBHOOK_URL = "https://smiletalk-bot-1.onrender.com/webhook"
+# ✅ Initialisation du client OpenAI
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-if not TOKEN:
-    print("❌ ERREUR : TELEGRAM_BOT_TOKEN n’est pas défini dans les variables d’environnement.")
-    sys.exit(1)
+# ✅ Vérification que ce fichier est bien exécuté
+print("✅ VERSION smiletalk_engine.py AVEC client.chat.completions.create")
 
-app = FastAPI()
-bot_app = ApplicationBuilder().token(TOKEN).updater(None).build()  # ✅ Pas de Updater (incompatible Python 3.13)
+# ✅ Chargement du fichier CSV
+df = pd.read_csv("SITUATIONS.csv", sep=";")
 
-# --- Sessions utilisateurs ---
-user_sessions = {}
+def analyser_reponse_chatgpt(user_response, row, texte_de_reference):
+    """
+    Analyse conversationnelle intelligente basée sur OpenAI v1.0+
+    """
+    prompt = f"""
+Tu es formateur au Parc des Princes. Tu évalues la réponse d’un agent d’accueil à une situation difficile avec un spectateur. Voici le contexte :
 
-# --- Commande /start ---
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Bienvenue dans le Smile Talk Training Bot !")
+Situation initiale : "{row['situation']}"
+Relance éventuelle : "{row.get('relance', '')}"
+Réponse de l'agent : "{user_response}"
 
-# --- Commande /entrainement ---
-async def entrainement(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = update.effective_user.id
-    row = df.sample(1).iloc[0]
-    user_sessions[user_id] = {
-        "row": row,
-        "timestamp": time.time(),
-        "relance_envoyee": False
-    }
-    await update.message.reply_text(f"🎯 Situation à traiter ({row['public']}):\n\n{row['situation']}")
+1. Donne un feedback pédagogique sur la réponse de l’agent (en 3-5 lignes maximum), en pointant les erreurs éventuelles (empathie, reformulation, ton, mots de confrontation, proposition de solution).
+2. Puis propose un exemple de réponse attendue dans ce contexte.
 
-# --- Réception de messages utilisateur ---
-async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = update.effective_user.id
-    session = user_sessions.get(user_id)
+Ta réponse doit contenir deux parties :
+📋 Feedback pédagogique :
+💬 Exemple attendu :
+"""
 
-    if not session or time.time() - session["timestamp"] > 300:
-        await update.message.reply_text("👉 Envoie d'abord /entrainement pour démarrer.")
-        return
-
-    row = session["row"]
-    relance_envoyee = session.get("relance_envoyee", False)
-    texte_de_reference = row["relance"] if relance_envoyee and row.get("relance", "").strip() else row["situation"]
-
-    feedback_list, bonne_reponse, info_op = analyser_reponse(update.message.text, row, texte_de_reference)
-    feedback = "\n".join(feedback_list)
-
-    exemple_attendu = row["bonne-reponse-relance"] if relance_envoyee and row.get("bonne-reponse-relance", "").strip() else row["bonne-reponse"]
-    info_op = info_op if not relance_envoyee else ""
-
-    if relance_envoyee:
-        await update.message.reply_text(
-            f"📋 Voici ton 2e feedback pédagogique (sur la relance) :\n{feedback}\n\n"
-            f"💬 Exemple attendu :\n{exemple_attendu}"
+    try:
+        completion = client.chat.completions.create(
+            model="gpt-4",
+            messages=[
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.4,
+            max_tokens=500,
         )
-        user_sessions.pop(user_id, None)
-    else:
-        message = f"📋 Voici ton feedback pédagogique :\n{feedback}\n\n" \
-                  f"💬 Exemple attendu :\n{exemple_attendu}"
-        if info_op:
-            message += f"\n\nℹ️ Info opérationnelle :\n{info_op}"
-        await update.message.reply_text(message)
 
-        if row.get("relance", "").strip():
-            session["relance_envoyee"] = True
-            await update.message.reply_text(f"🙋‍♂️ Le spectateur insiste :\n\n\"{row['relance']}\"")
+        texte = completion.choices[0].message.content
+
+        # ✅ Séparation des deux parties
+        if "💬 Exemple attendu :" in texte:
+            feedback, exemple = texte.split("💬 Exemple attendu :", 1)
+            feedback = feedback.replace("📋 Feedback pédagogique :", "").strip()
+            exemple = exemple.strip()
         else:
-            user_sessions.pop(user_id, None)
+            feedback = texte.strip()
+            exemple = ""
 
-# --- Ajout des Handlers ---
-bot_app.add_handler(CommandHandler("start", start))
-bot_app.add_handler(CommandHandler("entrainement", entrainement))
-bot_app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+        return [feedback], exemple, ""  # info_op non utilisé ici
 
-# --- Webhook FastAPI ---
-@app.post("/webhook")
-async def telegram_webhook(request: Request):
-    data = await request.json()
-    update = Update.de_json(data, bot_app.bot)
-    await bot_app.process_update(update)
-    return {"status": "ok"}
-
-@app.on_event("startup")
-async def startup():
-    await bot_app.initialize()
-    await bot_app.start()
-    await bot_app.bot.set_webhook(url=WEBHOOK_URL)
-    print("✅ Bot démarré avec webhook")
-
-@app.on_event("shutdown")
-async def shutdown():
-    await bot_app.stop()
+    except Exception as e:
+        return [f"❌ Erreur API OpenAI : {str(e)}"], "", ""
