@@ -1,46 +1,69 @@
-
 import pandas as pd
+import openai
 
+# Chargement des situations
 df = pd.read_csv("SITUATIONS.csv", sep=";")
 
-def analyser_reponse_gpt(user_response, row, texte_de_reference):
-    feedback = []
-
-    situation = row.get("situation", "").strip()
+def analyser_reponse_chatgpt(user_response, row, texte_ref):
+    public = row['public']
+    situation = row['situation']
     relance = row.get("relance", "").strip()
-    solution = str(row.get("solution", "")).strip().lower()
-    solutionnable = "oui" in solution
-    bonne_reponse = row.get("bonne-reponse", "").strip()
+    bonne_reponse = row['bonne-reponse']
     bonne_reponse_relance = row.get("bonne-reponse-relance", "").strip()
     info_op = row.get("informations opérationnelles", "").strip()
 
-    # 🧠 Analyse conversationnelle par ChatGPT
-    evaluation = []
+    # Détection si on est en réponse à la relance
+    en_reponse_a_la_relance = texte_ref.strip() == relance and relance != ""
 
-    # 1. Empathie
-    if any(x in user_response.lower() for x in ["désolé", "je comprends", "c’est dur", "j’imagine", "pas de chance", "courage"]):
-        evaluation.append("✅ Une forme d'empathie est bien présente.")
-    else:
-        feedback.append("🙁 Il manque une marque d’empathie explicite ou implicite.")
+    # Choix du texte d’exemple attendu
+    exemple_attendu = bonne_reponse_relance if en_reponse_a_la_relance and bonne_reponse_relance else bonne_reponse
 
-    # 2. Reformulation implicite
-    if any(mot in user_response.lower() for mot in situation.lower().split()[:10]) or any(x in user_response.lower() for x in ["vous venez de loin", "avec vos enfants", "le billet ne passe pas", "place occupée", "c’est cher"]):
-        evaluation.append("✅ La reformulation est présente, même de façon implicite.")
-    else:
-        feedback.append("🔁 Il manque une reformulation du problème : essaye de montrer que tu as compris ce que vit le spectateur.")
+    prompt = f"""
+Tu es formateur Smile Talk pour les équipes d’accueil du Paris Saint-Germain. Tu évalues la qualité d’une réponse donnée par un agent dans une situation difficile avec un spectateur.
 
-    # 3. Tonalité et tact
-    if any(x in user_response.lower() for x in ["je vous invite", "je peux", "je vous conseille", "peut-être", "ok pour vous", "ça vous va", "on peut essayer"]):
-        evaluation.append("✅ La solution est proposée avec tact.")
-    else:
-        if solutionnable:
-            feedback.append("💡 La solution devrait être formulée avec douceur et finir sur une ouverture (‘OK pour vous ?’).")
+Situation initiale : {situation}
+
+Relance du spectateur : {relance if relance else 'Aucune'}
+
+Réponse de l’agent : {user_response}
+
+Ta mission :
+- Commence par écrire un feedback pédagogique synthétique sur la réponse (maximum 4 lignes).
+- Si l’agent répond à la relance, ton analyse doit se concentrer uniquement sur la relance.
+- Commente la présence ou non d’empathie, la reformulation, la qualité de la solution et la manière de la formuler (pas d’impératif).
+- Sois formateur, précis, bienveillant mais sans compliment inutile.
+
+Ensuite, donne un exemple de réponse attendue adaptée à ce cas précis (pas une réponse générique). Termine par ce format :
+
+📋 Feedback :
+[ton analyse]
+
+💬 Exemple attendu :
+[exemple adapté]
+    """
+
+    try:
+        completion = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "Tu es un assistant expert en formation relationnelle en contexte sportif (Parc des Princes)."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.7,
+            max_tokens=400
+        )
+
+        texte = completion['choices'][0]['message']['content'].strip()
+
+        # Séparation feedback / exemple
+        if "💬 Exemple attendu :" in texte:
+            feedback, exemple = texte.split("💬 Exemple attendu :", 1)
+            feedback = feedback.replace("📋 Feedback :", "").strip()
+            exemple = exemple.strip()
         else:
-            if not any(x in user_response.lower() for x in ["désolé", "malheureusement", "je ne peux pas", "je suis embêté", "c’est compliqué"]):
-                feedback.append("🧱 Ce litige n’a pas de solution : il faut le dire avec tact et franchise.")
+            feedback = texte
+            exemple = exemple_attendu
 
-    # 4. Éviter les formulations dures
-    if any(x in user_response.lower() for x in ["il faut", "vous devez", "vous n’avez qu’à"]):
-        feedback.append("📏 Attention à ne pas imposer la solution (‘il faut’, ‘vous devez’…). Propose-la avec tact.")
-
-    return feedback, bonne_reponse_relance if row.get("relance_utilisee", False) else bonne_reponse, info_op
+        return [feedback], exemple, ""  # pas besoin d'info opérationnelle ici
+    except Exception as e:
+        return [f"Erreur lors de l’analyse avec ChatGPT : {e}"], exemple_attendu, ""
