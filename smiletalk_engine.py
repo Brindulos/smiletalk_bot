@@ -2,7 +2,7 @@ import os
 import pandas as pd
 from openai import OpenAI
 
-# Initialisation du client OpenAI
+# Initialisation du client OpenAI v1.0+
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # Chargement du fichier CSV
@@ -28,15 +28,18 @@ Ta réponse doit contenir deux parties :
 """
 
     try:
-        completion = client.chat.completions.create(
+        # Nouvelle interface client.chat.completions.create
+        response = client.chat.completions.create(
             model="gpt-4",
-            messages=[{"role": "user", "content": prompt}],
+            messages=[
+                {"role": "user", "content": prompt}
+            ],
             temperature=0.4,
             max_tokens=500,
         )
-        texte = completion.choices[0].message.content
 
-        # Découper le texte selon les balises
+        texte = response.choices[0].message.content
+
         if "💬 Exemple attendu :" in texte:
             feedback, exemple = texte.split("💬 Exemple attendu :", 1)
             feedback = feedback.replace("📋 Feedback pédagogique :", "").strip()
