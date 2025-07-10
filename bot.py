@@ -5,16 +5,17 @@ import openai
 from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler, filters
 
-# ✅ Clé API OpenAI
+# ✅ Clés API depuis variables Render
 openai.api_key = os.getenv("OPENAI_API_KEY")
+TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
 
-# ✅ Lecture du fichier de situations
+# ✅ Lecture des situations
 df = pd.read_csv("SITUATIONS.csv", sep=";")
 
-# ✅ Mémoire temporaire pour suivre la progression utilisateur
+# ✅ Mémoire temporaire
 user_sessions = {}
 
-# ✅ Évaluation avec score sur 3 étoiles
+# ✅ Analyse par GPT-4
 def evaluer_reponse(user_response, situation, relance=""):
     prompt = f"""
 Tu es formateur au Parc des Princes. Tu évalues la réponse d’un agent d’accueil à une situation difficile avec un spectateur.
@@ -54,7 +55,7 @@ Réponds sous ce format :
     except Exception as e:
         return f"❌ Erreur API OpenAI : {str(e)}", "", ""
 
-# ✅ Commande de démarrage
+# ✅ /start = envoi situation aléatoire
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     situation_row = df.sample().iloc[0]
@@ -65,7 +66,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     }
     await update.message.reply_text(f"🎯 Situation :\n{situation_row['situation']}\n\n💬 Que répondez-vous ?")
 
-# ✅ Message utilisateur
+# ✅ Messages utilisateurs
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     message = update.message.text.strip()
@@ -85,16 +86,14 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif etat == "attente_reponse2":
         session["reponse2"] = message
         feedback, exemple, score = evaluer_reponse(session["reponse2"], session["situation"], session["relance"])
-        await update.message.reply_text(f"📋 Voici ton feedback pédagogique :\n{feedback}\n\n💬 Exemple attendu :\n{exemple}\n\n⭐ Score : {score}")
+        await update.message.reply_text(
+            f"📋 Voici ton feedback pédagogique :\n{feedback}\n\n💬 Exemple attendu :\n{exemple}\n\n⭐ Score : {score}"
+        )
         del user_sessions[user_id]
 
-# ✅ Lancement du bot
+# ✅ Lancement Webhook (Render)
 if __name__ == "__main__":
-    from dotenv import load_dotenv
-    load_dotenv()
-    token = os.getenv("TELEGRAM_TOKEN")
-
-    app = ApplicationBuilder().token(token).build()
+    app = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
     print("✅ Bot Smile Talk en ligne")
