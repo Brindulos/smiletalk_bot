@@ -1,7 +1,5 @@
 openai==0.28
-pandas
 python-telegram-bot==20.7
 pandas
-scikit-learn
 
 
