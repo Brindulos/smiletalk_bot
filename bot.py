@@ -3,14 +3,17 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
 from smiletalk_engine import df, analyser_reponse_chatgpt as analyser_reponse
 import time
+import os
 
 user_sessions = {}
 
-TOKEN = "8075264265:AAHojOOYSZJB3s9ahH2sYi2_c3ZbFo6SUNY"  # 🔒 Remplacer avant mise en production
+TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")  # 🔐 Assure-toi que la variable est bien définie dans .env ou Render
 WEBHOOK_URL = "https://smiletalk-bot-1.onrender.com/webhook"
 
 app = FastAPI()
-bot_app = ApplicationBuilder().token(TOKEN).build()
+
+# ✅ Fix important ici : on désactive le Updater car il bug avec Python 3.13
+bot_app = ApplicationBuilder().token(TOKEN).updater(None).build()
 
 # Commande /start
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
