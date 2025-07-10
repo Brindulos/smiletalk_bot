@@ -1,7 +1,7 @@
+openai==0.28
+pandas
 python-telegram-bot==20.7
-fastapi
-uvicorn
 pandas
 scikit-learn
-openai>=1.0.0
+
 
