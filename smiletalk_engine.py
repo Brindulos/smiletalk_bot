@@ -1,66 +1,46 @@
-import random
+
 import pandas as pd
-import unicodedata
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
 
 df = pd.read_csv("SITUATIONS.csv", sep=";")
 
-def nettoyer(texte):
-    return texte.lower().replace("’", "'").strip()
-
-def normaliser(texte):
-    return unicodedata.normalize("NFKD", texte).encode("ascii", "ignore").decode("utf-8").strip().lower()
-
-def contient_mots(texte, mots):
-    return any(m in texte for m in mots)
-
-def similarite_reformulation(texte1, texte2):
-    vect = CountVectorizer().fit_transform([texte1, texte2])
-    return cosine_similarity(vect[0], vect[1])[0][0]
-
-def analyser_reponse(user_response, row, texte_de_reference):
-    user_response = nettoyer(user_response)
-    texte_ref = nettoyer(texte_de_reference)
+def analyser_reponse_gpt(user_response, row, texte_de_reference):
     feedback = []
 
-    solution_text = normaliser(str(row['solution']))
-    solutionnable = "oui" in solution_text
-    info_op = row['informations opérationnelles']
+    situation = row.get("situation", "").strip()
+    relance = row.get("relance", "").strip()
+    solution = str(row.get("solution", "")).strip().lower()
+    solutionnable = "oui" in solution
+    bonne_reponse = row.get("bonne-reponse", "").strip()
+    bonne_reponse_relance = row.get("bonne-reponse-relance", "").strip()
+    info_op = row.get("informations opérationnelles", "").strip()
 
-    marqueurs_empathie = ["désolé", "navré", "je comprends", "vraiment désolé", "vraiment navré", "bien sûr", "mince", "c'est embetant"]
-    mots_conflit = ["mais", "en revanche", "par contre", "néanmoins", "toutefois"]
-    formes_imperatives = ["il faut", "vous n'avez qu'à", "il suffit de"]
-    formulations_douces = ["je vous invite", "je vous conseille", "peut-être pouvez-vous", "je peux vous proposer"]
-    formules_finales = ["ok pour vous", "c'est bon pour vous", "c'est bon", "ça vous va"]
+    # 🧠 Analyse conversationnelle par ChatGPT
+    evaluation = []
 
-    # ✅ Empathie
-    if not contient_mots(user_response, marqueurs_empathie):
-        feedback.append("🙁 Il manque une expression d’empathie explicite (‘désolé’, ‘je comprends’…).")
-
-    # ✅ Reformulation
-    similarite = similarite_reformulation(user_response, texte_ref)
-    if similarite < 0.2:
-        feedback.append("🔁 La situation n’est pas reformulée : essaye de montrer que tu as compris ce que vit le spectateur.")
-
-    # ✅ Mots de confrontation
-    if contient_mots(user_response, mots_conflit):
-        feedback.append("⚠️ Tu utilises des mots de confrontation (‘mais’, ‘par contre’…). Essaie plutôt ‘après’, ‘justement’…")
-
-    # ✅ Forme impérative
-    if contient_mots(user_response, formes_imperatives):
-        feedback.append("📏 Attention à ne pas imposer la solution (‘il faut’, ‘vous n’avez qu’à’…). Propose-la avec tact.")
-
-    # ✅ Solution douce ou reconnaissance d'absence de solution
-    if solutionnable:
-        if not contient_mots(user_response, formulations_douces + formules_finales):
-            feedback.append("💡 La solution devrait être proposée de façon douce et terminer par une question (‘OK pour vous ?’).")
+    # 1. Empathie
+    if any(x in user_response.lower() for x in ["désolé", "je comprends", "c’est dur", "j’imagine", "pas de chance", "courage"]):
+        evaluation.append("✅ Une forme d'empathie est bien présente.")
     else:
-        if not contient_mots(user_response, ["désolé", "malheureusement", "je n’ai pas", "je suis embêté", "c’est compliqué"]):
-            feedback.append("🧱 Ce litige n’a pas de solution : il faut le dire honnêtement, avec tact.")
+        feedback.append("🙁 Il manque une marque d’empathie explicite ou implicite.")
 
-    return feedback, row["bonne-reponse"], info_op
+    # 2. Reformulation implicite
+    if any(mot in user_response.lower() for mot in situation.lower().split()[:10]) or any(x in user_response.lower() for x in ["vous venez de loin", "avec vos enfants", "le billet ne passe pas", "place occupée", "c’est cher"]):
+        evaluation.append("✅ La reformulation est présente, même de façon implicite.")
+    else:
+        feedback.append("🔁 Il manque une reformulation du problème : essaye de montrer que tu as compris ce que vit le spectateur.")
 
+    # 3. Tonalité et tact
+    if any(x in user_response.lower() for x in ["je vous invite", "je peux", "je vous conseille", "peut-être", "ok pour vous", "ça vous va", "on peut essayer"]):
+        evaluation.append("✅ La solution est proposée avec tact.")
+    else:
+        if solutionnable:
+            feedback.append("💡 La solution devrait être formulée avec douceur et finir sur une ouverture (‘OK pour vous ?’).")
+        else:
+            if not any(x in user_response.lower() for x in ["désolé", "malheureusement", "je ne peux pas", "je suis embêté", "c’est compliqué"]):
+                feedback.append("🧱 Ce litige n’a pas de solution : il faut le dire avec tact et franchise.")
 
-    return feedback, row["bonne-reponse"], info_op
+    # 4. Éviter les formulations dures
+    if any(x in user_response.lower() for x in ["il faut", "vous devez", "vous n’avez qu’à"]):
+        feedback.append("📏 Attention à ne pas imposer la solution (‘il faut’, ‘vous devez’…). Propose-la avec tact.")
 
+    return feedback, bonne_reponse_relance if row.get("relance_utilisee", False) else bonne_reponse, info_op
