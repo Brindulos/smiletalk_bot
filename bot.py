@@ -6,15 +6,17 @@ import time
 
 user_sessions = {}
 
-TOKEN = "8075264265:AAHojOOYSZJB3s9ahH2sYi2_c3ZbFo6SUNY"  # 🔒 à remplacer par ton token
+TOKEN = "8075264265:AAHojOOYSZJB3s9ahH2sYi2_c3ZbFo6SUNY"  # 🔒 Remplacer avant mise en production
 WEBHOOK_URL = "https://smiletalk-bot-1.onrender.com/webhook"
 
 app = FastAPI()
 bot_app = ApplicationBuilder().token(TOKEN).build()
 
+# Commande /start
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Bienvenue dans le Smile Talk Training Bot !")
 
+# Commande /entrainement
 async def entrainement(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     row = df.sample(1).iloc[0]
@@ -25,6 +27,7 @@ async def entrainement(update: Update, context: ContextTypes.DEFAULT_TYPE):
     }
     await update.message.reply_text(f"🎯 Situation à traiter ({row['public']}):\n\n{row['situation']}")
 
+# Réception des messages utilisateur
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     session = user_sessions.get(user_id)
@@ -36,30 +39,34 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     row = session["row"]
     relance_envoyee = session.get("relance_envoyee", False)
 
-    # Choix du texte de référence
+    # Définir le texte de référence (situation ou relance)
     texte_de_reference = row["relance"] if relance_envoyee and isinstance(row.get("relance"), str) and row["relance"].strip() else row["situation"]
 
     feedback_list, bonne_reponse, info_op = analyser_reponse(update.message.text, row, texte_de_reference)
     feedback = "\n".join(feedback_list)
 
-    # Sélection de l'exemple attendu en fonction de la relance
+    # Choisir l'exemple attendu (situation ou relance)
     if relance_envoyee and isinstance(row.get("bonne-reponse-relance"), str) and row["bonne-reponse-relance"].strip():
         exemple_attendu = row["bonne-reponse-relance"]
     else:
         exemple_attendu = row["bonne-reponse"]
+
+    # Supprimer info opérationnelle si on est dans la relance
+    info_op = info_op if not relance_envoyee else ""
 
     if relance_envoyee:
         await update.message.reply_text(
             f"📋 Voici ton 2e feedback pédagogique (sur la relance) :\n{feedback}\n\n"
             f"💬 Exemple attendu :\n{exemple_attendu}"
         )
-        user_sessions.pop(user_id, None)  # Session terminée
+        user_sessions.pop(user_id, None)  # Fin de session après relance
     else:
-        await update.message.reply_text(
-            f"📋 Voici ton feedback pédagogique :\n{feedback}\n\n"
-            f"💬 Exemple attendu :\n{exemple_attendu}\n\n"
-            f"ℹ️ Info opérationnelle :\n{info_op}"
-        )
+        message = f"📋 Voici ton feedback pédagogique :\n{feedback}\n\n" \
+                  f"💬 Exemple attendu :\n{exemple_attendu}"
+        if info_op:
+            message += f"\n\nℹ️ Info opérationnelle :\n{info_op}"
+        await update.message.reply_text(message)
+
         relance = str(row.get("relance", "")).strip()
         if relance:
             session["relance_envoyee"] = True
