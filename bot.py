@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
-from smiletalk_engine import df, analyser_reponse
+from smiletalk_engine import df, analyser_reponse_chatgpt as analyser_reponse
 import time
 
 user_sessions = {}
