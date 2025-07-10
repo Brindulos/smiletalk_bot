@@ -1,57 +1,33 @@
-import os
+from fastapi import FastAPI
+from pydantic import BaseModel
+from smiletalk_engine import analyser_reponse_chatgpt
 import pandas as pd
-from openai import OpenAI
 
-# ✅ Initialisation du client OpenAI
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
-# ✅ Vérification que ce fichier est bien exécuté
-print("✅ VERSION smiletalk_engine.py AVEC client.chat.completions.create")
-
-# ✅ Chargement du fichier CSV
+# Chargement des situations
 df = pd.read_csv("SITUATIONS.csv", sep=";")
 
-def analyser_reponse_chatgpt(user_response, row, texte_de_reference):
-    """
-    Analyse conversationnelle intelligente basée sur OpenAI v1.0+
-    """
-    prompt = f"""
-Tu es formateur au Parc des Princes. Tu évalues la réponse d’un agent d’accueil à une situation difficile avec un spectateur. Voici le contexte :
+app = FastAPI()
 
-Situation initiale : "{row['situation']}"
-Relance éventuelle : "{row.get('relance', '')}"
-Réponse de l'agent : "{user_response}"
+class AnalyseRequest(BaseModel):
+    user_response: str
+    index: int
+    texte_de_reference: str = ""
 
-1. Donne un feedback pédagogique sur la réponse de l’agent (en 3-5 lignes maximum), en pointant les erreurs éventuelles (empathie, reformulation, ton, mots de confrontation, proposition de solution).
-2. Puis propose un exemple de réponse attendue dans ce contexte.
-
-Ta réponse doit contenir deux parties :
-📋 Feedback pédagogique :
-💬 Exemple attendu :
-"""
-
+@app.post("/analyse")
+def analyse(request: AnalyseRequest):
     try:
-        completion = client.chat.completions.create(
-            model="gpt-4",
-            messages=[
-                {"role": "user", "content": prompt}
-            ],
-            temperature=0.4,
-            max_tokens=500,
+        row = df.iloc[request.index]
+        feedback, exemple, info_op = analyser_reponse_chatgpt(
+            request.user_response, row, request.texte_de_reference
         )
-
-        texte = completion.choices[0].message.content
-
-        # ✅ Séparation des deux parties
-        if "💬 Exemple attendu :" in texte:
-            feedback, exemple = texte.split("💬 Exemple attendu :", 1)
-            feedback = feedback.replace("📋 Feedback pédagogique :", "").strip()
-            exemple = exemple.strip()
-        else:
-            feedback = texte.strip()
-            exemple = ""
-
-        return [feedback], exemple, ""  # info_op non utilisé ici
-
+        return {
+            "feedback": feedback,
+            "exemple": exemple,
+            "info_op": info_op
+        }
     except Exception as e:
-        return [f"❌ Erreur API OpenAI : {str(e)}"], "", ""
+        return {"error": str(e)}
+
+@app.get("/")
+def root():
+    return {"message": "SmileTalk Bot API is running."}
