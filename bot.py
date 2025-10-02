@@ -31,6 +31,7 @@ Réponse de l'agent : "{user_response}"
 - Absence de confrontation (pas de “mais”“cependant”“en revanche”“par contre”“toutefois”“néanmoins”, pas de ton sec)
 - Absence d'accusation du spectateur (pas de “vous auriez dû”)
 - Absence de justification
+- Absence de l'utilsation de l'impératif
 - Proposition de solution claire et polie
 
 Réponds sous ce format :
