@@ -1,9 +1,10 @@
-situation;relance
-Un spectateur dit qu’un autre est assis à sa place.;Oui mais j’ai payé plus de 600€ cette place ! C’est inadmissible !
-En porte G, un spectateur se plaint de la lenteur de la file d’attente.;Le match commence dans 5 minutes, je vais rater le début !
-En porte, un spectateur veut passer avec un billet non valide.;Appelez un responsable, je veux entrer tout de suite.
-Une spectatrice s’énerve car elle ne trouve pas les toilettes.;Y en a partout sauf pour les femmes, c’est n’importe quoi !
-Une spectatrice s’énerve car la sécurité lui demande d'ôter son maillot équipe visiteurs;C’est n’importe quoi !
+index;situation;relance
+1;Un spectateur dit qu’un autre est assis à sa place.;Oui mais j’ai payé plus de 600€ cette place ! C’est inadmissible !
+2;En porte G, un spectateur se plaint de la lenteur de la file d’attente.;Le match commence dans 5 minutes, je vais rater le début !
+3;En porte, un spectateur veut passer avec un billet non valide.;Appelez un responsable, je veux entrer tout de suite.
+4;Une spectatrice s’énerve car elle ne trouve pas les toilettes.;Y en a partout sauf pour les femmes, c’est n’importe quoi !
+5;Une spectatrice s’énerve car la sécurité lui demande d'ôter son maillot équipe visiteurs;C’est n’importe quoi !
+
 
 
 
