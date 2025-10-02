@@ -26,7 +26,7 @@ Réponse de l'agent : "{user_response}"
 
 1. Donne un feedback pédagogique (3-5 lignes max) sur la réponse.
 2. Propose un exemple de réponse attendue.
-3. Donne une note globale entre 1 et 3 étoiles selon :
+3. Donne une note globale entre 0 et 3 étoiles selon :
 - Empathie / Reformulation de la frustration
 - Absence de confrontation (pas de “mais”“cependant”“en revanche”“par contre”“toutefois”“néanmoins”, pas de ton sec)
 - Absence d'accusation du spectateur (pas de “vous auriez dû”)
