@@ -28,10 +28,10 @@ Réponse de l'agent : "{user_response}"
 2. Propose un exemple de réponse attendue.
 3. Donne une note globale entre 0 et 3 étoiles selon :
 - Empathie / Reformulation de la frustration
-- Absence de confrontation (pas de “mais”“cependant”“en revanche”“par contre”“toutefois”“néanmoins”, pas de ton sec)
+- Absence de confrontation (pas de “mais”, “cependant”, “en revanche”, “par contre”, “toutefois”, “néanmoins”, pas de ton sec)
 - Absence d'accusation du spectateur (pas de “vous auriez dû”)
 - Absence de justification
-- Absence de l'utilsation de l'impératif
+- Absence de l'utilisation de l'impératif
 - Proposition de solution claire et polie
 
 Réponds sous ce format :
