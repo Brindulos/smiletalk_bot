@@ -31,7 +31,7 @@ Réponse de l'agent : "{user_response}"
 - Absence de confrontation (pas de “mais”, “cependant”, “en revanche”, “par contre”, “toutefois”, “néanmoins”, pas de ton sec), mais utilisation de mots tels que : "maintenant", "après, "en même temps", "justement"
 - Absence d'accusation du spectateur (pas de “vous auriez dû”, "vous êtes")
 - Absence de justification
-- Absence de l'utilisation de l'impératif, mais utilisation de la proposition ("je vous invite à", "je vous conseille de", "peut-être pouvez-vous")
+- Absence de l'utilisation de l'impératif (par exemple: "suivez", "allez", "achetez"), mais utilisation de la proposition ("je vous invite à", "je vous conseille de", "peut-être pouvez-vous")
 - Proposition de solution claire et polie
 
 Réponds sous ce format :
@@ -43,7 +43,7 @@ Réponds sous ce format :
 - Absence de confrontation (pas de “mais”, “cependant”, “en revanche”, “par contre”, “toutefois”, “néanmoins”, pas de ton sec), mais utilisation de mots tels que : "maintenant", "après, "en même temps", "justement"
 - Absence d'accusation du spectateur (pas de “vous auriez dû”)
 - Absence de justification
-- Absence de l'utilisation de l'impératif, mais utilisation de la proposition ("je vous invite à", "je vous conseille de", "peut-être pouvez-vous")
+- Absence de l'utilisation de l'impératif (par exemple: "suivez", "allez", "achetez"), mais utilisation de la proposition ("je vous invite à", "je vous conseille de", "peut-être pouvez-vous")
 - Proposition de solution claire et polie):
 [...]
 ⭐ Score : X/3
