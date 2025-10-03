@@ -37,7 +37,14 @@ Réponse de l'agent : "{user_response}"
 Réponds sous ce format :
 📋 Feedback pédagogique :
 [...]
-💬 Exemple attendu :
+💬 Exemple attendu 
+(doit respecter ces contraintes :
+ - Empathie / Reformulation de la frustration
+- Absence de confrontation (pas de “mais”, “cependant”, “en revanche”, “par contre”, “toutefois”, “néanmoins”, pas de ton sec)
+- Absence d'accusation du spectateur (pas de “vous auriez dû”)
+- Absence de justification
+- Absence de l'utilisation de l'impératif
+- Proposition de solution claire et polie):
 [...]
 ⭐ Score : X/3
     """
