@@ -29,7 +29,7 @@ Réponse de l'agent : "{user_response}"
 3. Donne une note globale entre 0 et 3 étoiles selon :
 - Empathie / Reformulation de la frustration
 - Absence de confrontation (pas de “mais”, “cependant”, “en revanche”, “par contre”, “toutefois”, “néanmoins”, pas de ton sec)
-- Absence d'accusation du spectateur (pas de “vous auriez dû”)
+- Absence d'accusation du spectateur (pas de “vous auriez dû”, "vous êtes")
 - Absence de justification
 - Absence de l'utilisation de l'impératif
 - Proposition de solution claire et polie
