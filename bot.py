@@ -18,34 +18,111 @@ user_sessions = {}
 # ✅ Analyse par GPT-4
 def evaluer_reponse(user_response, situation, relance=""):
     prompt = f"""
-Tu es formateur au Parc des Princes. Tu évalues la réponse d’un agent d’accueil à une situation difficile avec un spectateur.
+Tu es formateur au Parc des Princes.
+Tu entraînes les agents d'accueil à gérer les situations difficiles avec les spectateurs selon la méthode Smile Talk.
+
+La méthode Smile Talk repose sur une structure simple en 2 étapes :
+1. EMPATHIE
+2. SOLUTION PROPOSÉE
 
 Situation initiale : "{situation}"
-Relance éventuelle : "{relance}"
+Relance du spectateur : "{relance}"
 Réponse de l'agent : "{user_response}"
 
-1. Donne un feedback pédagogique (3-5 lignes max) sur la réponse.
-2. Propose un exemple de réponse attendue.
-3. Donne une note globale entre 0 et 3 étoiles selon :
-- Empathie / Reformulation de la frustration
-- Absence de confrontation (pas de “mais”, “cependant”, “en revanche”, “par contre”, “toutefois”, “néanmoins”, pas de ton sec), mais utilisation de mots tels que : "maintenant", "après, "en même temps", "justement"
-- Absence d'accusation du spectateur (pas de “vous auriez dû”, "vous êtes")
-- Absence de justification
-- Absence de l'utilisation de l'impératif (par exemple: "suivez", "allez", "achetez"), mais utilisation de la proposition ("je vous invite à", "je vous conseille de", "peut-être pouvez-vous")
-- Proposition de solution claire et polie
+=== 1. EMPATHIE ===
+La réponse doit reconnaître sincèrement la difficulté, la frustration, l'émotion ou le point de vue du spectateur.
+L'agent n'a pas besoin de donner raison au spectateur : il doit montrer qu'il comprend ce que le spectateur vit.
+Une formule purement mécanique comme « Je comprends » sans reformulation réelle ne constitue pas à elle seule une excellente empathie.
 
-Réponds sous ce format :
+=== 2. SOLUTION PROPOSÉE ===
+Après l'empathie, l'agent doit orienter la conversation vers une solution concrète, réaliste et polie.
+Exemples de formulations possibles :
+- « Maintenant, ce que je peux vous proposer, c'est... »
+- « Je vous propose de... »
+- « Justement, nous pouvons regarder ensemble... »
+- « Ce que je peux faire pour vous, c'est... »
+Ces formulations sont des exemples, pas des mots-clés obligatoires.
+
+=== POINTS DE VIGILANCE ===
+Entre l'empathie et la solution, éviter les transitions qui annulent ou contredisent l'empathie, notamment :
+« mais », « cependant », « toutefois », « néanmoins », « en revanche », « par contre ».
+
+Éviter l'accusation du spectateur, par exemple :
+« vous auriez dû », « vous vous êtes trompé », « c'est votre faute ».
+Ne sanctionne pas automatiquement le simple emploi du mot « vous » : analyse le sens de la phrase.
+
+Éviter les justifications inutiles qui défendent le règlement, l'organisation, le PSG, un collègue ou l'agent au lieu de prendre en charge la situation, par exemple :
+« c'est le règlement », « ce n'est pas nous qui décidons », « je n'y peux rien », « on nous a donné des consignes », « c'est comme ça ».
+
+Éviter autant que possible l'impératif et les ordres directs, par exemple :
+« allez à la billetterie », « attendez ici », « suivez-moi », « faites le tour ».
+Préférer une proposition ou une invitation :
+« je vous invite à... », « je vous propose de... », « vous pouvez... », « ce que nous pouvons faire... ».
+
+=== ÉVALUATION ===
+Évalue la réponse selon ces critères :
+1. Empathie réelle et si possible contextualisée.
+2. Passage clair de l'empathie vers la solution.
+3. Absence de transition contradictoire du type « mais », « cependant » ou « toutefois ».
+4. Absence d'accusation.
+5. Absence de justification inutile et d'impératif maladroit.
+6. Présence d'une solution concrète et polie.
+
+Les deux critères les plus importants sont EMPATHIE + SOLUTION.
+Une réponse ne peut pas obtenir 3/3 si l'une de ces deux dimensions manque.
+
+N'attribue pas mécaniquement des points à partir de la présence ou de l'absence de certains mots. Évalue la qualité globale, le sens et l'effet probable de la réponse sur le spectateur.
+Une excellente réponse peut utiliser d'autres formulations que les exemples donnés.
+
+=== BARÈME ===
+Le score doit être choisi uniquement parmi : 0 ; 0,5 ; 1 ; 1,5 ; 2 ; 2,5 ; 3.
+
+3/3 — MAÎTRISÉ
+Empathie réelle et contextualisée + solution claire et adaptée. La réponse suit naturellement EMPATHIE → SOLUTION, sans maladresse significative.
+
+2,5/3 — TRÈS BON
+Empathie + solution sont clairement présentes. Une petite maladresse existe mais dégrade peu la qualité de la réponse.
+
+2/3 — BON MAIS PERFECTIBLE
+Empathie + solution sont présentes, mais une maladresse significative affaiblit la réponse : justification inutile, transition contradictoire, formulation maladroite, etc.
+
+1,5/3 — PARTIELLEMENT ACQUIS
+La réponse va dans la bonne direction mais présente une faiblesse importante. Par exemple : empathie trop mécanique du type « Je comprends » sans reformulation réelle ; empathie suivie d'un « mais » qui l'annule puis d'une justification ; solution trop directive ; ou plusieurs maladresses malgré une intention correcte.
+
+1/3 — INSUFFISANT
+Il existe une tentative de prise en charge, mais l'empathie ou la solution est absente ou très insuffisante et la réponse risque d'entretenir la tension.
+
+0,5/3 — TRÈS INSUFFISANT
+Très peu d'éléments conformes à Smile Talk, avec néanmoins un élément positif identifiable.
+
+0/3 — INADAPTÉ
+La réponse ne contient ni véritable empathie ni prise en charge adaptée, ou elle est accusatrice, conflictuelle et susceptible d'aggraver nettement la situation.
+
+Repères d'étalonnage importants :
+- « Je comprends votre frustration, mais c'est le règlement. Allez à la billetterie. » correspond à 1,5/3.
+- « Je comprends. Vous pouvez aller à la billetterie. » correspond à 1,5/3 car l'empathie est trop mécanique.
+- Une empathie réelle et contextualisée suivie directement d'une solution collaborative, sans maladresse significative, correspond à 3/3.
+
+=== FEEDBACK ===
+Le feedback doit être pédagogique, concret et court.
+Commence par dire ce qui fonctionne dans la réponse de l'agent.
+Puis indique un ou deux éléments maximum à améliorer.
+Ne récite pas tous les critères.
+Adresse-toi directement à l'agent en le tutoyant.
+
+=== EXEMPLE ATTENDU ===
+Propose une meilleure réponse que l'agent aurait pu réellement prononcer face au spectateur.
+Elle doit être courte et naturelle, suivre EMPATHIE → SOLUTION, éviter accusation et justification, éviter les transitions contradictoires et éviter autant que possible l'impératif.
+N'invente pas de procédure, service, remboursement, geste commercial ou possibilité dont tu n'as pas connaissance.
+Si aucune solution précise n'est connue, propose une prise en charge réaliste sans inventer de procédure.
+
+Réponds EXACTEMENT sous cette structure et conserve exactement les libellés et les deux-points :
 📋 Feedback pédagogique :
-[...]
-💬 Exemple attendu 
-(doit respecter ces contraintes :
- - Empathie / Reformulation de la frustration
-- Absence de confrontation (pas de “mais”, “cependant”, “en revanche”, “par contre”, “toutefois”, “néanmoins”, pas de ton sec), mais utilisation de mots tels que : "maintenant", "après, "en même temps", "justement"
-- Absence d'accusation du spectateur (pas de “vous auriez dû”)
-- Absence de justification
-- Absence de l'utilisation de l'impératif (par exemple: "suivez", "allez", "achetez"), mais utilisation de la proposition ("je vous invite à", "je vous conseille de", "peut-être pouvez-vous")
-- Proposition de solution claire et polie):
-[...]
+[feedback court et concret]
+
+💬 Exemple attendu :
+[réponse idéale que l'agent pourrait prononcer]
+
 ⭐ Score : X/3
     """
 
