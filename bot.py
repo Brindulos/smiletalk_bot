@@ -70,6 +70,7 @@ Préférer une proposition ou une invitation :
 
 Les deux critères les plus importants sont EMPATHIE + SOLUTION.
 Une réponse ne peut pas obtenir 3/3 si l'une de ces deux dimensions manque.
+La simple présence formelle des deux étapes ne suffit pas à dépasser 1,5/3 : pour obtenir 2/3 ou davantage, l'empathie doit être suffisamment explicite, développée ou contextualisée pour montrer au spectateur que sa difficulté a réellement été comprise. Une réponse très courte avec seulement « je comprends » ou une formule équivalente, même suivie d'une intention de chercher une solution, reste au maximum à 1,5/3 si l'empathie n'est pas davantage exprimée.
 
 N'attribue pas mécaniquement des points à partir de la présence ou de l'absence de certains mots. Évalue la qualité globale, le sens et l'effet probable de la réponse sur le spectateur.
 Une excellente réponse peut utiliser d'autres formulations que les exemples donnés.
@@ -84,10 +85,10 @@ Empathie réelle et contextualisée + solution claire et adaptée. La réponse s
 Empathie + solution sont clairement présentes. Une petite maladresse existe mais dégrade peu la qualité de la réponse.
 
 2/3 — BON MAIS PERFECTIBLE
-Empathie + solution sont présentes, mais une maladresse significative affaiblit la réponse : justification inutile, transition contradictoire, formulation maladroite, etc.
+Empathie + solution sont présentes et réellement exprimées, mais une maladresse significative affaiblit la réponse : justification inutile, transition contradictoire, formulation maladroite, etc. Une empathie réduite à une formule minimale comme « je comprends » ne suffit pas pour obtenir 2/3.
 
 1,5/3 — PARTIELLEMENT ACQUIS
-La réponse va dans la bonne direction mais présente une faiblesse importante. Par exemple : empathie trop mécanique du type « Je comprends » sans reformulation réelle ; empathie suivie d'un « mais » qui l'annule puis d'une justification ; solution trop directive ; ou plusieurs maladresses malgré une intention correcte.
+La structure EMPATHIE → SOLUTION est identifiable, mais elle reste minimale ou présente une faiblesse importante. Par exemple : empathie trop mécanique du type « Je comprends » sans reformulation réelle ; réponse très courte avec une empathie minimale suivie d'une intention de chercher une solution ; empathie suivie d'un « mais » qui l'annule puis d'une justification ; solution trop directive ; ou plusieurs maladresses malgré une intention correcte.
 
 1/3 — INSUFFISANT
 Il existe une tentative de prise en charge, mais l'empathie ou la solution est absente ou très insuffisante et la réponse risque d'entretenir la tension.
@@ -101,6 +102,7 @@ La réponse ne contient ni véritable empathie ni prise en charge adaptée, ou e
 Repères d'étalonnage importants :
 - « Je comprends votre frustration, mais c'est le règlement. Allez à la billetterie. » correspond à 1,5/3.
 - « Je comprends. Vous pouvez aller à la billetterie. » correspond à 1,5/3 car l'empathie est trop mécanique.
+- « Oui effectivement je comprends. Je vais voir ce que je peux faire. » correspond à 1,5/3 : les deux étapes sont présentes, mais l'empathie est vraiment minimale, non contextualisée, et l'ensemble est trop succinct pour obtenir 2/3.
 - Une empathie réelle et contextualisée suivie directement d'une solution collaborative, sans maladresse significative, correspond à 3/3.
 
 === FEEDBACK ===
