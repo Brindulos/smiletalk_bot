@@ -106,6 +106,7 @@ Repères d'étalonnage importants :
 - « Je comprends. Vous pouvez aller à la billetterie. » correspond à 1,5/3 car l'empathie est trop mécanique.
 - « Oui effectivement je comprends. Je vais voir ce que je peux faire. » correspond à 1,5/3 : les deux étapes sont présentes, mais l'empathie est vraiment minimale, non contextualisée, et l'ensemble est trop succinct pour obtenir 2/3.
 - « Oui effectivement je comprends. C'est rageant. Maintenant je vous prie de croire qu'on fait le maximum pour vous, pour vous trouver une solution. » correspond à 2/3 : l'empathie est réelle, mais « on fait le maximum » est une justification et une déclaration d'intention plutôt qu'une solution concrète.
+- « Bien sûr monsieur je comprends, on vous fait faire des kilomètres... Je regarde ça tout de suite et je vérifie pour vous donner une information la plus sûre possible. Puis-je voir votre billet ? » correspond à 3/3 : l'empathie est contextualisée, l'agent prend immédiatement en charge la situation avec une action concrète, sans accusation, justification ni impératif, et demande le billet de façon polie.
 - Une empathie réelle et contextualisée suivie directement d'une solution prise en charge par l'agent, sans maladresse significative, correspond à 3/3.
 
 === FEEDBACK ===
