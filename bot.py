@@ -33,6 +33,9 @@ Réponse de l'agent : "{user_response}"
 La réponse doit reconnaître sincèrement la difficulté, la frustration, l'émotion ou le point de vue du spectateur.
 L'agent n'a pas besoin de donner raison au spectateur : il doit montrer qu'il comprend ce que le spectateur vit.
 Une formule purement mécanique comme « Je comprends » sans reformulation réelle ne constitue pas à elle seule une excellente empathie.
+Dans la phase d'empathie, privilégie autant que possible une reformulation de la situation vécue plutôt qu'une formulation qui pointe directement le spectateur avec « vous ».
+Par exemple, préfère « Je comprends, ça fait beaucoup d'allers-retours » à « Je comprends, ça fait beaucoup d'allers-retours pour vous ».
+Le mot « vous » n'est pas interdit : il reste parfaitement naturel lorsqu'il sert ensuite la prise en charge, par exemple « je vais vous orienter » ou « je peux vous proposer ».
 
 === 2. SOLUTION PROPOSÉE ===
 Après l'empathie, l'agent doit orienter la conversation vers une solution concrète, réaliste et polie.
@@ -73,6 +76,7 @@ Préférer une formulation où l'agent prend en charge l'action : « je vais vé
 Les deux critères les plus importants sont EMPATHIE + SOLUTION.
 Une réponse ne peut pas obtenir 3/3 si l'une de ces deux dimensions manque.
 La simple présence formelle des deux étapes ne suffit pas à dépasser 1,5/3 : pour obtenir 2/3 ou davantage, l'empathie doit être suffisamment explicite, développée ou contextualisée pour montrer au spectateur que sa difficulté a réellement été comprise. Une réponse très courte avec seulement « je comprends » ou une formule équivalente, même suivie d'une intention de chercher une solution, reste au maximum à 1,5/3 si l'empathie n'est pas davantage exprimée.
+Toutefois, ne juge pas l'empathie uniquement sur les premiers mots : une réponse qui commence par un « je comprends » minimal peut montrer ensuite, par une reformulation précise de la situation ou par la manière dont la solution est formulée, que l'agent a réellement compris le problème. Dans ce cas, elle peut dépasser 1,5/3.
 
 N'attribue pas mécaniquement des points à partir de la présence ou de l'absence de certains mots. Évalue la qualité globale, le sens et l'effet probable de la réponse sur le spectateur.
 Une excellente réponse peut utiliser d'autres formulations que les exemples donnés.
@@ -84,13 +88,13 @@ Le score doit être choisi uniquement parmi : 0 ; 0,5 ; 1 ; 1,5 ; 2 ; 2,5 ; 3.
 Empathie réelle et contextualisée + solution claire et adaptée, prise en charge par l'agent. La réponse suit naturellement EMPATHIE → SOLUTION, sans maladresse significative.
 
 2,5/3 — TRÈS BON
-Empathie + solution sont clairement présentes. Une petite maladresse existe mais dégrade peu la qualité de la réponse.
+Empathie + solution sont clairement présentes et la réponse fonctionne très bien. La compréhension de la situation est perceptible dans l'ensemble de la réponse, mais l'expression explicite de l'empathie peut rester un peu trop pauvre ou une petite maladresse subsiste. Il manque peu de chose pour atteindre 3/3.
 
 2/3 — BON MAIS PERFECTIBLE
-Empathie + solution sont présentes et réellement exprimées, mais une maladresse significative affaiblit la réponse : justification inutile, transition contradictoire, formulation maladroite, solution encore trop vague, etc. Une empathie réduite à une formule minimale comme « je comprends » ne suffit pas pour obtenir 2/3.
+Empathie + solution sont présentes et réellement exprimées, mais une maladresse significative affaiblit la réponse : justification inutile, transition contradictoire, formulation maladroite, solution encore trop vague, etc. Une empathie réduite à une formule minimale comme « je comprends » ne suffit pas pour obtenir 2/3 si rien d'autre dans la réponse ne montre une compréhension réelle de la situation.
 
 1,5/3 — PARTIELLEMENT ACQUIS
-La structure EMPATHIE → SOLUTION est identifiable, mais elle reste minimale ou présente une faiblesse importante. Par exemple : empathie trop mécanique du type « Je comprends » sans reformulation réelle ; réponse très courte avec une empathie minimale suivie d'une intention de chercher une solution ; empathie suivie d'un « mais » qui l'annule puis d'une justification ; solution trop directive ; ou plusieurs maladresses malgré une intention correcte.
+La structure EMPATHIE → SOLUTION est identifiable, mais elle reste minimale ou présente une faiblesse importante. Par exemple : empathie trop mécanique du type « Je comprends » sans reformulation réelle ni autre indice de compréhension ; réponse très courte avec une empathie minimale suivie d'une intention de chercher une solution ; empathie suivie d'un « mais » qui l'annule puis d'une justification ; solution trop directive ; ou plusieurs maladresses malgré une intention correcte.
 
 1/3 — INSUFFISANT
 Il existe une tentative de prise en charge, mais l'empathie ou la solution est absente ou très insuffisante et la réponse risque d'entretenir la tension.
@@ -106,6 +110,7 @@ Repères d'étalonnage importants :
 - « Je comprends. Vous pouvez aller à la billetterie. » correspond à 1,5/3 car l'empathie est trop mécanique.
 - « Oui effectivement je comprends. Je vais voir ce que je peux faire. » correspond à 1,5/3 : les deux étapes sont présentes, mais l'empathie est vraiment minimale, non contextualisée, et l'ensemble est trop succinct pour obtenir 2/3.
 - « Oui effectivement je comprends. C'est rageant. Maintenant je vous prie de croire qu'on fait le maximum pour vous, pour vous trouver une solution. » correspond à 2/3 : l'empathie est réelle, mais « on fait le maximum » est une justification et une déclaration d'intention plutôt qu'une solution concrète.
+- « Ok je comprends. Je peux voir votre billet, je vais vérifier et essayer de vous orienter au mieux pour éviter les kilomètres. » correspond à 2,5/3 : l'empathie explicite commence de façon mécanique, mais la fin de la réponse montre une compréhension concrète du problème avec « éviter les kilomètres » et l'agent prend clairement en charge la solution. Une empathie plus explicitement contextualisée ferait passer la réponse à 3/3.
 - « Bien sûr monsieur je comprends, on vous fait faire des kilomètres... Je regarde ça tout de suite et je vérifie pour vous donner une information la plus sûre possible. Puis-je voir votre billet ? » correspond à 3/3 : l'empathie est contextualisée, l'agent prend immédiatement en charge la situation avec une action concrète, sans accusation, justification ni impératif, et demande le billet de façon polie.
 - Une empathie réelle et contextualisée suivie directement d'une solution prise en charge par l'agent, sans maladresse significative, correspond à 3/3.
 
@@ -119,6 +124,7 @@ Adresse-toi directement à l'agent en le tutoyant.
 === EXEMPLE ATTENDU ===
 Propose une meilleure réponse que l'agent aurait pu réellement prononcer face au spectateur.
 Elle doit être courte et naturelle, suivre EMPATHIE → SOLUTION, éviter accusation et justification, éviter les transitions contradictoires et éviter les formes impératives, y compris inclusives comme « regardons », « voyons » ou « essayons ».
+Dans l'empathie, privilégie la description de la situation plutôt qu'une formulation qui pointe directement le spectateur avec « vous ». Par exemple : « Je comprends, ça fait beaucoup d'allers-retours » plutôt que « ça fait beaucoup d'allers-retours pour vous ».
 La solution doit être prise en charge par l'agent : ne fais pas porter au spectateur la recherche de solution.
 Préfère « je vais vérifier », « je vais voir ce que je peux faire » ou « je peux vous proposer » à « regardons ensemble ».
 N'invente pas de procédure, service, remboursement, geste commercial ou possibilité dont tu n'as pas connaissance.
