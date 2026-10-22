@@ -70,13 +70,18 @@ Ne sanctionne pas automatiquement le simple emploi du mot « vous » : analyse l
 Éviter les formulations qui risquent inutilement d'augmenter la tension, notamment les injonctions telles que « gardez votre calme » et les menaces directes du type « sinon la sécurité prendra le relais ».
 
 RÈGLE SPÉCIFIQUE — RECOURS À LA SÉCURITÉ EN RÉPONSE 2 UNIQUEMENT :
-L'évocation de la sécurité est une option envisageable uniquement dans la RÉPONSE 2, après la relance du spectateur, si la tension ou le comportement du spectateur peut justifier cette limite.
-Ne considère donc pas automatiquement toute mention de la sécurité en réponse 2 comme une mauvaise pratique.
-Pour être conforme à Smile Talk, l'agent doit toutefois présenter la sécurité comme un recours qu'il préférerait éviter, et non comme une menace ou un moyen de pression. Il doit en même temps montrer que son objectif prioritaire reste de solutionner lui-même le problème au mieux de ses capacités.
-La formulation de référence est indirecte, par exemple : « Je préférerais que la sécurité n'ait pas à intervenir car ils sont plus expéditifs. Mon objectif est de trouver une solution avec vous et je vais d'abord voir ce que je peux faire. »
+L'évocation de la sécurité est une option envisageable uniquement dans la RÉPONSE 2, après la relance du spectateur, si la tension ou le comportement du spectateur peut justifier cette limite, notamment en cas d'insulte, d'agressivité, de menace ou de comportement susceptible de troubler la tribune.
+Dans ce cas, N'ÉCRIS JAMAIS dans le feedback que l'agent « aurait dû éviter de mentionner la sécurité », que « mentionner la sécurité augmente forcément la tension » ou toute autre critique portant sur le simple fait d'avoir évoqué la sécurité. Évalue COMMENT la sécurité est évoquée, et non LE FAIT qu'elle soit évoquée.
+Pour être conforme à Smile Talk, l'évocation de la sécurité en réponse 2 doit suivre cette logique :
+1. expliquer sobrement et factuellement POURQUOI la sécurité pourrait être amenée à intervenir, en reliant cette possibilité au comportement problématique observé, par exemple des échanges qui deviennent insultants ;
+2. indiquer que l'agent préférerait que la sécurité n'ait pas à intervenir, notamment parce qu'ils sont plus expéditifs ;
+3. réaffirmer que l'objectif prioritaire de l'agent reste de solutionner lui-même le problème au mieux de ses capacités ;
+4. terminer par une QUESTION D'ENGAGEMENT adressée au spectateur, par exemple « C'est OK pour vous ? », « On est d'accord ? » ou une formulation naturelle équivalente, afin que le spectateur s'engage à permettre la poursuite de la recherche de solution dans de bonnes conditions.
+Cette question d'engagement est importante : si le spectateur poursuit ensuite le comportement problématique malgré cet engagement proposé, l'intervention de la sécurité devient une conséquence cohérente de la situation et non une menace utilisée par l'agent.
+La sécurité doit donc être présentée comme une conséquence possible et expliquée, jamais comme une punition ou un moyen de pression.
 Une formulation directe et menaçante comme « gardez votre calme sinon j'appelle la sécurité » reste à éviter.
 En RÉPONSE 1, l'agent ne doit pas évoquer spontanément la sécurité : il doit privilégier empathie puis recherche de solution.
-La mention de la sécurité en réponse 2 ne doit pas être pénalisée en elle-même si ces conditions sont respectées.
+La mention de la sécurité en réponse 2 ne doit pas être pénalisée en elle-même si le contexte la justifie. Si elle est pertinente mais imparfaitement formulée, critique précisément la formulation à améliorer sans conseiller de supprimer toute référence à la sécurité.
 
 Éviter autant que possible toutes les formes impératives, y compris les impératifs inclusifs comme « regardons », « voyons » ou « essayons ».
 Exemples à éviter : « allez à la billetterie », « attendez ici », « suivez-moi », « faites le tour », « regardons ensemble », « voyons ce qu'on peut faire ».
@@ -133,13 +138,16 @@ Repères d'étalonnage importants :
 - « Ok je comprends. Je peux voir votre billet, je vais vérifier et essayer de vous orienter au mieux pour éviter les kilomètres. » correspond à 2,5/3.
 - « Bien sûr monsieur je comprends, on vous fait faire des kilomètres... Je regarde ça tout de suite et je vérifie pour vous donner une information la plus sûre possible. Puis-je voir votre billet ? » correspond à 3/3.
 
+Repère spécifique lorsque la sécurité est légitimement évoquée en RÉPONSE 2 :
+- Après une relance insultante ou agressive, une réponse du type « Je comprends monsieur, c'est un gros montant et vous ne pouvez pas accéder à vos places. Si les échanges deviennent insultants en tribune, la sécurité peut être amenée à intervenir, et je préférerais qu'on n'en arrive pas là car ils sont plus expéditifs. Mon objectif, c'est de trouver une solution pour que vous puissiez profiter du match. Je vais regarder immédiatement ce que je peux faire. C'est OK pour vous ? » constitue un bon modèle de gestion de la limite : raison de l'intervention expliquée, volonté d'éviter la sécurité, retour à la solution et engagement final du spectateur.
+
 === FEEDBACK ===
 Le feedback doit porter sur L'ENSEMBLE DES DEUX RÉPONSES.
 Il doit être pédagogique, concret et court.
 Commence par dire ce qui fonctionne dans l'échange de l'agent.
 Puis indique un ou deux éléments maximum à améliorer.
 Si un « mais » relie l'empathie à une justification, une explication, une objection, une injonction, une menace ou une solution dans la réponse 1 OU la réponse 2, le feedback doit impérativement le signaler explicitement ET expliquer ce qu'il introduit concrètement et pourquoi cela affaiblit l'empathie. Une remarque générique sur le mot « mais » n'est pas suffisante.
-Si la sécurité est évoquée en réponse 2, juge sa formulation selon la règle spécifique : valorise une évocation indirecte où l'agent dit qu'il préférerait que la sécurité n'ait pas à intervenir, notamment parce qu'ils sont plus expéditifs, tout en réaffirmant qu'il cherche d'abord à solutionner le problème au mieux de ses capacités. Signale en revanche une formulation utilisée comme menace directe.
+Si la sécurité est évoquée en réponse 2 et que la relance comporte insulte, agressivité, menace ou comportement problématique, NE CONSEILLE PAS de supprimer la mention de la sécurité. Évalue plutôt si l'agent a expliqué pourquoi elle pourrait intervenir, s'il a indiqué préférer éviter cette intervention, s'il a réaffirmé sa volonté de chercher une solution et s'il a terminé par une question d'engagement du type « C'est OK pour vous ? ». Si l'un de ces éléments manque, indique précisément lequel.
 Ne récite pas tous les critères.
 Adresse-toi directement à l'agent en le tutoyant.
 
@@ -151,7 +159,7 @@ N'INVENTE JAMAIS une procédure, un service, un replacement, une autre place, un
 Le fait que l'agent lui-même ait proposé une possibilité dans sa réponse ne signifie pas qu'elle existe réellement : ne la reprends pas comme un fait établi.
 Si aucune solution précise n'est connue, reste volontairement générique et formule une prise en charge réaliste, par exemple « je vais vérifier ce qu'il est possible de faire ».
 Évite les promesses vagues comme « je vais faire tout mon possible », « je vais faire le maximum » ou « nous allons faire notre possible ». Préfère décrire l'action concrète que l'agent va entreprendre, sans inventer le résultat.
-Si le contexte de la RELANCE rend pertinent le recours à la sécurité, l'exemple attendu peut l'évoquer, mais uniquement de manière indirecte et en maintenant la priorité donnée à la recherche de solution par l'agent. Exemple de ton : « Je préférerais que la sécurité n'ait pas à intervenir car ils sont plus expéditifs. Mon objectif est de trouver une solution avec vous et je vais d'abord voir ce que je peux faire. » Ne propose jamais spontanément la sécurité si la relance ne le justifie pas.
+Si le contexte de la RELANCE rend pertinent le recours à la sécurité, l'exemple attendu peut l'évoquer. Dans ce cas, il DOIT : expliquer factuellement pourquoi la sécurité pourrait intervenir ; dire que l'agent préférerait qu'elle n'ait pas à intervenir car ils sont plus expéditifs ; revenir explicitement à l'objectif de trouver une solution ; et TERMINER par une question d'engagement du type « C'est OK pour vous ? » ou équivalent. Ne propose jamais spontanément la sécurité si la relance ne le justifie pas.
 
 Réponds EXACTEMENT sous cette structure et conserve exactement les libellés et les deux-points :
 📋 Feedback pédagogique :
