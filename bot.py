@@ -36,12 +36,14 @@ Une formule purement mécanique comme « Je comprends » sans reformulation rée
 
 === 2. SOLUTION PROPOSÉE ===
 Après l'empathie, l'agent doit orienter la conversation vers une solution concrète, réaliste et polie.
-Exemples de formulations possibles :
-- « Maintenant, ce que je peux vous proposer, c'est... »
-- « Je vous propose de... »
-- « Justement, nous pouvons regarder ensemble... »
-- « Ce que je peux faire pour vous, c'est... »
+La prise en charge de la solution appartient à l'agent : ce n'est pas au spectateur de chercher lui-même une solution.
+Privilégie des formulations où l'agent assume clairement l'action, par exemple :
+- « Maintenant, je vais voir ce que je peux faire pour vous trouver une solution. »
+- « Je vais vérifier ce qu'il est possible de faire. »
+- « Ce que je peux vous proposer, c'est... »
+- « Je vais vérifier votre billet pour voir quelle solution je peux vous proposer. »
 Ces formulations sont des exemples, pas des mots-clés obligatoires.
+Une simple déclaration d'intention comme « on fait le maximum » n'est pas à elle seule une solution concrète proposée.
 
 === POINTS DE VIGILANCE ===
 Entre l'empathie et la solution, éviter les transitions qui annulent ou contredisent l'empathie, notamment :
@@ -52,12 +54,12 @@ Entre l'empathie et la solution, éviter les transitions qui annulent ou contred
 Ne sanctionne pas automatiquement le simple emploi du mot « vous » : analyse le sens de la phrase.
 
 Éviter les justifications inutiles qui défendent le règlement, l'organisation, le PSG, un collègue ou l'agent au lieu de prendre en charge la situation, par exemple :
-« c'est le règlement », « ce n'est pas nous qui décidons », « je n'y peux rien », « on nous a donné des consignes », « c'est comme ça ».
+« c'est le règlement », « ce n'est pas nous qui décidons », « je n'y peux rien », « on nous a donné des consignes », « c'est comme ça », « je vous prie de croire qu'on fait le maximum ».
 
-Éviter autant que possible l'impératif et les ordres directs, par exemple :
-« allez à la billetterie », « attendez ici », « suivez-moi », « faites le tour ».
-Préférer une proposition ou une invitation :
-« je vous invite à... », « je vous propose de... », « vous pouvez... », « ce que nous pouvons faire... ».
+Éviter autant que possible toutes les formes impératives, y compris les impératifs inclusifs comme « regardons », « voyons » ou « essayons ».
+Exemples à éviter : « allez à la billetterie », « attendez ici », « suivez-moi », « faites le tour », « regardons ensemble », « voyons ce qu'on peut faire ».
+Même lorsqu'un impératif inclusif est poli et collaboratif, il ne correspond pas au modèle Smile Talk recherché.
+Préférer une formulation où l'agent prend en charge l'action : « je vais vérifier... », « je vais voir... », « je peux vous proposer... ».
 
 === ÉVALUATION ===
 Évalue la réponse selon ces critères :
@@ -65,8 +67,8 @@ Préférer une proposition ou une invitation :
 2. Passage clair de l'empathie vers la solution.
 3. Absence de transition contradictoire du type « mais », « cependant » ou « toutefois ».
 4. Absence d'accusation.
-5. Absence de justification inutile et d'impératif maladroit.
-6. Présence d'une solution concrète et polie.
+5. Absence de justification inutile et d'impératif, y compris inclusif.
+6. Présence d'une solution concrète et polie prise en charge par l'agent.
 
 Les deux critères les plus importants sont EMPATHIE + SOLUTION.
 Une réponse ne peut pas obtenir 3/3 si l'une de ces deux dimensions manque.
@@ -79,13 +81,13 @@ Une excellente réponse peut utiliser d'autres formulations que les exemples don
 Le score doit être choisi uniquement parmi : 0 ; 0,5 ; 1 ; 1,5 ; 2 ; 2,5 ; 3.
 
 3/3 — MAÎTRISÉ
-Empathie réelle et contextualisée + solution claire et adaptée. La réponse suit naturellement EMPATHIE → SOLUTION, sans maladresse significative.
+Empathie réelle et contextualisée + solution claire et adaptée, prise en charge par l'agent. La réponse suit naturellement EMPATHIE → SOLUTION, sans maladresse significative.
 
 2,5/3 — TRÈS BON
 Empathie + solution sont clairement présentes. Une petite maladresse existe mais dégrade peu la qualité de la réponse.
 
 2/3 — BON MAIS PERFECTIBLE
-Empathie + solution sont présentes et réellement exprimées, mais une maladresse significative affaiblit la réponse : justification inutile, transition contradictoire, formulation maladroite, etc. Une empathie réduite à une formule minimale comme « je comprends » ne suffit pas pour obtenir 2/3.
+Empathie + solution sont présentes et réellement exprimées, mais une maladresse significative affaiblit la réponse : justification inutile, transition contradictoire, formulation maladroite, solution encore trop vague, etc. Une empathie réduite à une formule minimale comme « je comprends » ne suffit pas pour obtenir 2/3.
 
 1,5/3 — PARTIELLEMENT ACQUIS
 La structure EMPATHIE → SOLUTION est identifiable, mais elle reste minimale ou présente une faiblesse importante. Par exemple : empathie trop mécanique du type « Je comprends » sans reformulation réelle ; réponse très courte avec une empathie minimale suivie d'une intention de chercher une solution ; empathie suivie d'un « mais » qui l'annule puis d'une justification ; solution trop directive ; ou plusieurs maladresses malgré une intention correcte.
@@ -103,7 +105,8 @@ Repères d'étalonnage importants :
 - « Je comprends votre frustration, mais c'est le règlement. Allez à la billetterie. » correspond à 1,5/3.
 - « Je comprends. Vous pouvez aller à la billetterie. » correspond à 1,5/3 car l'empathie est trop mécanique.
 - « Oui effectivement je comprends. Je vais voir ce que je peux faire. » correspond à 1,5/3 : les deux étapes sont présentes, mais l'empathie est vraiment minimale, non contextualisée, et l'ensemble est trop succinct pour obtenir 2/3.
-- Une empathie réelle et contextualisée suivie directement d'une solution collaborative, sans maladresse significative, correspond à 3/3.
+- « Oui effectivement je comprends. C'est rageant. Maintenant je vous prie de croire qu'on fait le maximum pour vous, pour vous trouver une solution. » correspond à 2/3 : l'empathie est réelle, mais « on fait le maximum » est une justification et une déclaration d'intention plutôt qu'une solution concrète.
+- Une empathie réelle et contextualisée suivie directement d'une solution prise en charge par l'agent, sans maladresse significative, correspond à 3/3.
 
 === FEEDBACK ===
 Le feedback doit être pédagogique, concret et court.
@@ -114,7 +117,9 @@ Adresse-toi directement à l'agent en le tutoyant.
 
 === EXEMPLE ATTENDU ===
 Propose une meilleure réponse que l'agent aurait pu réellement prononcer face au spectateur.
-Elle doit être courte et naturelle, suivre EMPATHIE → SOLUTION, éviter accusation et justification, éviter les transitions contradictoires et éviter autant que possible l'impératif.
+Elle doit être courte et naturelle, suivre EMPATHIE → SOLUTION, éviter accusation et justification, éviter les transitions contradictoires et éviter les formes impératives, y compris inclusives comme « regardons », « voyons » ou « essayons ».
+La solution doit être prise en charge par l'agent : ne fais pas porter au spectateur la recherche de solution.
+Préfère « je vais vérifier », « je vais voir ce que je peux faire » ou « je peux vous proposer » à « regardons ensemble ».
 N'invente pas de procédure, service, remboursement, geste commercial ou possibilité dont tu n'as pas connaissance.
 Si aucune solution précise n'est connue, propose une prise en charge réaliste sans inventer de procédure.
 
