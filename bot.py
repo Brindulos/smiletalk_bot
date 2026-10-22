@@ -5,17 +5,12 @@ import openai
 from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler, filters
 
-# ✅ Clés API depuis variables Render
 openai.api_key = os.getenv("OPENAI_API_KEY")
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
 
-# ✅ Lecture des situations
 df = pd.read_csv("SITUATIONS.csv", sep=";")
-
-# ✅ Mémoire temporaire
 user_sessions = {}
 
-# ✅ Analyse par GPT-4
 def evaluer_reponse(reponse1, reponse2, situation, relance=""):
     prompt = f"""
 Tu es formateur au Parc des Princes.
@@ -50,7 +45,7 @@ Privilégie des formulations où l'agent assume clairement l'action, par exemple
 - « Ce que je peux vous proposer, c'est... »
 - « Je vais vérifier votre billet pour voir quelle solution je peux vous proposer. »
 Ces formulations sont des exemples, pas des mots-clés obligatoires.
-Une simple déclaration d'intention comme « on fait le maximum » n'est pas à elle seule une solution concrète proposée.
+Une simple déclaration d'intention comme « on fait le maximum », « je vais faire le maximum », « je vais faire tout mon possible » ou « nous allons faire notre possible » n'est pas à elle seule une solution concrète proposée. Dans l'exemple attendu, préfère une action identifiable comme « je vais vérifier », « je vais regarder ce qu'il est possible de faire » ou une autre prise en charge concrète adaptée au contexte.
 
 === POINTS DE VIGILANCE ===
 Entre l'empathie et la solution, éviter les transitions qui annulent ou contredisent l'empathie, notamment :
@@ -58,8 +53,10 @@ Entre l'empathie et la solution, éviter les transitions qui annulent ou contred
 
 RÈGLE OBLIGATOIRE SUR « MAIS » :
 Recherche « mais » dans LES DEUX réponses de l'agent.
-Si l'une des deux réponses utilise « mais » pour passer de l'empathie à une justification, une explication, une objection ou une solution, le feedback doit obligatoirement le signaler explicitement.
-Ne te contente pas d'en tenir compte dans la note : explique à l'agent que ce « mais » risque d'annuler l'effet de l'empathie qui précède.
+Si l'une des deux réponses utilise « mais » pour passer de l'empathie à une justification, une explication, une objection, une injonction, une menace ou une solution, le feedback doit obligatoirement le signaler explicitement.
+Ne te contente JAMAIS d'écrire une remarque générique comme « attention au mot mais » ou « évite le mais ».
+Explique concrètement CE QUE le « mais » introduit dans cette phrase et POURQUOI cela affaiblit l'empathie. Par exemple, précise s'il introduit une justification, une contradiction, une injonction, une menace ou une défense du règlement.
+S'il y a plusieurs « mais » problématiques dans les deux réponses, analyse leur effet global et, si leurs effets sont différents, signale brièvement la différence la plus utile pédagogiquement.
 Dans l'exemple attendu, reformule alors sans « mais ».
 Cette règle n'impose pas une pénalité chiffrée automatique : la note reste fondée sur la qualité globale de l'interaction.
 
@@ -69,6 +66,8 @@ Ne sanctionne pas automatiquement le simple emploi du mot « vous » : analyse l
 
 Éviter les justifications inutiles qui défendent le règlement, l'organisation, le PSG, un collègue ou l'agent au lieu de prendre en charge la situation, par exemple :
 « c'est le règlement », « ce n'est pas nous qui décidons », « je n'y peux rien », « on nous a donné des consignes », « c'est comme ça », « je vous prie de croire qu'on fait le maximum ».
+
+Éviter les formulations qui risquent inutilement d'augmenter la tension, notamment les injonctions telles que « gardez votre calme » et les menaces ou avertissements prématurés du type « sinon la sécurité prendra le relais », lorsque la situation peut encore être prise en charge verbalement. Si une limite de sécurité est réellement nécessaire, elle doit être formulée avec calme, proportionnalité et sans annuler l'empathie.
 
 Éviter autant que possible toutes les formes impératives, y compris les impératifs inclusifs comme « regardons », « voyons » ou « essayons ».
 Exemples à éviter : « allez à la billetterie », « attendez ici », « suivez-moi », « faites le tour », « regardons ensemble », « voyons ce qu'on peut faire ».
@@ -81,7 +80,7 @@ Préférer une formulation où l'agent prend en charge l'action : « je vais vé
 2. Passage clair de l'empathie vers la solution.
 3. Absence de transition contradictoire du type « mais », « cependant » ou « toutefois » dans l'une ou l'autre réponse.
 4. Absence d'accusation.
-5. Absence de justification inutile et d'impératif, y compris inclusif.
+5. Absence de justification inutile, d'impératif ou d'escalade verbale inutile.
 6. Présence d'une solution concrète et polie prise en charge par l'agent.
 7. Qualité de la réaction de l'agent après la relance du spectateur.
 
@@ -130,7 +129,7 @@ Le feedback doit porter sur L'ENSEMBLE DES DEUX RÉPONSES.
 Il doit être pédagogique, concret et court.
 Commence par dire ce qui fonctionne dans l'échange de l'agent.
 Puis indique un ou deux éléments maximum à améliorer.
-Si un « mais » relie l'empathie à une justification, une explication, une objection ou une solution dans la réponse 1 OU la réponse 2, le feedback doit impérativement le signaler explicitement.
+Si un « mais » relie l'empathie à une justification, une explication, une objection, une injonction, une menace ou une solution dans la réponse 1 OU la réponse 2, le feedback doit impérativement le signaler explicitement ET expliquer ce qu'il introduit concrètement et pourquoi cela affaiblit l'empathie. Une remarque générique sur le mot « mais » n'est pas suffisante.
 Ne récite pas tous les critères.
 Adresse-toi directement à l'agent en le tutoyant.
 
@@ -141,6 +140,7 @@ La solution doit être prise en charge par l'agent.
 N'INVENTE JAMAIS une procédure, un service, un replacement, une autre place, un remboursement, un geste commercial ou une possibilité qui n'est pas explicitement garantie par la situation fournie.
 Le fait que l'agent lui-même ait proposé une possibilité dans sa réponse ne signifie pas qu'elle existe réellement : ne la reprends pas comme un fait établi.
 Si aucune solution précise n'est connue, reste volontairement générique et formule une prise en charge réaliste, par exemple « je vais vérifier ce qu'il est possible de faire ».
+Évite les promesses vagues comme « je vais faire tout mon possible », « je vais faire le maximum » ou « nous allons faire notre possible ». Préfère décrire l'action concrète que l'agent va entreprendre, sans inventer le résultat.
 
 Réponds EXACTEMENT sous cette structure et conserve exactement les libellés et les deux-points :
 📋 Feedback pédagogique :
@@ -168,7 +168,6 @@ Réponds EXACTEMENT sous cette structure et conserve exactement les libellés et
     except Exception as e:
         return f"❌ Erreur API OpenAI : {str(e)}", "", ""
 
-# ✅ /start = envoi situation aléatoire
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     situation_row = df.sample().iloc[0]
@@ -179,7 +178,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     }
     await update.message.reply_text(f"🎯 Situation :\n{situation_row['situation']}\n\n💬 Que répondez-vous ?")
 
-# ✅ Messages utilisateurs
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     message = update.message.text.strip()
@@ -209,7 +207,6 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         del user_sessions[user_id]
 
-# ✅ Lancement Webhook (Render)
 if __name__ == "__main__":
     app = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
     app.add_handler(CommandHandler("start", start))
