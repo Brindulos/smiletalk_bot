@@ -1,5 +1,6 @@
 import os
 import random
+import re
 import pandas as pd
 import openai
 from telegram import Update
@@ -12,6 +13,15 @@ df = pd.read_csv("SITUATIONS.csv", sep=";")
 user_sessions = {}
 
 def evaluer_reponse(reponse1, reponse2, situation, relance=""):
+    # Vérification exacte des mots employés par l'agent.
+    occurrences_mais = []
+    for numero, reponse in ((1, reponse1), (2, reponse2)):
+        for match in re.finditer(r"\bmais\b", str(reponse), flags=re.IGNORECASE):
+            debut = max(0, match.start() - 65)
+            fin = min(len(reponse), match.end() + 85)
+            occurrences_mais.append(f"Réponse {numero} : « {reponse[debut:fin]} »")
+    constat_mais = ("Présent : " + " ; ".join(occurrences_mais)) if occurrences_mais else "ABSENT des deux réponses de l'agent."
+
     prompt = f"""
 Tu es formateur au Parc des Princes.
 Tu entraînes les agents d'accueil à gérer les situations difficiles avec les spectateurs selon la méthode Smile Talk.
@@ -52,6 +62,9 @@ Entre l'empathie et la solution, éviter les transitions qui annulent ou contred
 « mais », « cependant », « toutefois », « néanmoins », « en revanche », « par contre ».
 
 RÈGLE OBLIGATOIRE SUR « MAIS » :
+CONSTAT VÉRIFIÉ PAR LE PROGRAMME : {constat_mais}
+Ce constat est la source de vérité. Si ABSENT, il est STRICTEMENT INTERDIT de dire que l'agent a utilisé « mais » ou de lui reprocher ce mot. Les mots présents dans la situation, la relance et les consignes ne comptent pas. Si Présent, analyse uniquement les occurrences réelles citées ci-dessus.
+
 Recherche « mais » dans LES DEUX réponses de l'agent.
 Si l'une des deux réponses utilise « mais » pour passer de l'empathie à une justification, une explication, une objection, une injonction, une menace ou une solution, le feedback doit obligatoirement le signaler explicitement.
 Ne te contente JAMAIS d'écrire une remarque générique comme « attention au mot mais » ou « évite le mais ».
