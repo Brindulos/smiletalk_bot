@@ -173,7 +173,7 @@ Réponds EXACTEMENT sous cette structure et conserve exactement les libellés et
 
     try:
         completion = openai.ChatCompletion.create(
-            model="gpt-4",
+            model="gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.4,
             max_tokens=600
