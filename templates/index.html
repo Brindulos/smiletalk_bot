@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#07162e">
+  <meta name="description" content="Smile Talk, entraînement à l'accueil des spectateurs au Parc des Princes.">
+  <link rel="stylesheet" href="/static/styles.css">
+  <title>Smile Talk · Parc des Princes</title>
+</head>
+<body>
+  <div class="app">
+    <header class="masthead">
+      <div class="brand-mark" aria-hidden="true"><span>☺</span></div>
+      <div class="brand">
+        <div class="brand-name">SMILE<span>TALK</span></div>
+        <div class="brand-caption">PARC DES PRINCES · ENTRAÎNEMENT</div>
+      </div>
+      <div class="online-dot" title="Disponible toute l'année"><span></span> 24/7</div>
+    </header>
+
+    <main class="main" id="main">
+      <section class="view" id="view-login" hidden>
+        <div class="eyebrow"><span class="eyebrow-line"></span> ESPACE AGENTS</div>
+        <h1>L'art de <em>bien recevoir.</em></h1>
+        <p class="intro">Un entraînement de quelques minutes pour mieux accueillir les supporters, même dans les situations les plus délicates.</p>
+        <form id="login-form" class="access-card">
+          <label for="access-code">Code d'accès équipe</label>
+          <div class="field-wrap"><span aria-hidden="true">✦</span><input id="access-code" name="code" type="password" autocomplete="off" maxlength="150" placeholder="Saisis le code partagé" required></div>
+          <button class="primary-button" type="submit">Entrer dans Smile Talk <span aria-hidden="true">→</span></button>
+          <div class="privacy-note">Accès réservé aux équipes autorisées. Aucun compte personnel nécessaire.</div>
+        </form>
+      </section>
+
+      <section class="view" id="view-welcome" hidden>
+        <div class="eyebrow"><span class="eyebrow-line"></span> PRÊT À JOUER ?</div>
+        <h1>Chaque sourire<br><em>compte.</em></h1>
+        <p class="intro">Un spectateur, une situation inattendue, deux occasions de bien réagir.</p>
+        <div class="welcome-card">
+          <div class="welcome-number">01 <span>—</span> 02 <span>—</span> 03</div>
+          <div class="steps">
+            <div><span class="step-icon">◎</span><div><strong>Découvre la situation</strong><small>Une scène réaliste du stade</small></div></div>
+            <div><span class="step-icon">↗</span><div><strong>Réagis en deux temps</strong><small>Le spectateur te relance</small></div></div>
+            <div><span class="step-icon">★</span><div><strong>Reçois ton débrief</strong><small>Conseils, modèle et note sur 3</small></div></div>
+          </div>
+        </div>
+        <button id="start-button" class="primary-button">Commencer un entraînement <span aria-hidden="true">→</span></button>
+        <p class="bottom-note">Accessible sur téléphone, sans installation. Environ 3 minutes par exercice.</p>
+      </section>
+
+      <section class="view" id="view-training" hidden>
+        <div class="training-meta"><span class="pill" id="phase-pill">ÉTAPE 1 / 2</span><span class="scenario-index">MISE EN SITUATION</span></div>
+        <h1 id="training-heading">À toi <em>de jouer.</em></h1>
+        <div class="situation-card">
+          <div class="card-topline"><span class="small-icon">◈</span> <span>SITUATION AU PARC</span></div>
+          <p id="situation-text"></p>
+        </div>
+        <div id="first-answer-summary" class="past-answer" hidden>
+          <div class="past-title">TA PREMIÈRE RÉPONSE</div>
+          <p id="first-answer-text"></p>
+        </div>
+        <div id="relance-card" class="spectator-card" hidden>
+          <div class="card-topline"><span class="small-icon">◉</span> <span>LE SPECTATEUR INSISTE</span></div>
+          <p id="relance-text"></p>
+        </div>
+        <form id="answer-form" class="answer-form">
+          <label id="answer-label" for="answer-text">Que réponds-tu au spectateur ?</label>
+          <textarea id="answer-text" maxlength="1800" rows="5" placeholder="Parle comme si tu étais face au spectateur…" required></textarea>
+          <div class="answer-toolbar"><span id="character-count">0 / 1800</span><span>Tu peux aussi utiliser la dictée de ton clavier <span aria-hidden="true">🎙</span></span></div>
+          <button id="answer-submit" class="primary-button" type="submit">Envoyer ma réponse <span aria-hidden="true">→</span></button>
+        </form>
+      </section>
+
+      <section class="view" id="view-processing" hidden>
+        <div class="processing-ring" aria-hidden="true"><div>★</div></div>
+        <h1 class="centered">Ton débrief <em>arrive.</em></h1>
+        <p class="intro center-text">Nous analysons tes deux réponses : empathie, prise en charge et qualité de la relation.</p>
+        <div class="loading-bars" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+      </section>
+
+      <section class="view" id="view-result" hidden>
+        <div class="eyebrow"><span class="eyebrow-line"></span> TON DÉBRIEF</div>
+        <h1>Bien joué. <em>On progresse !</em></h1>
+        <div class="score-card"><div class="score-caption">TON SCORE SMILE TALK</div><div class="score-number"><span id="score-value">—</span><small>/3</small></div><p id="score-legend">L'essentiel : progresser à chaque situation.</p></div>
+        <article class="feedback-card"><div class="card-topline"><span class="small-icon">✦</span> FEEDBACK PÉDAGOGIQUE</div><p id="feedback-text"></p></article>
+        <article class="example-card"><div class="card-topline"><span class="small-icon">↗</span> EXEMPLE À RETENIR</div><p id="example-text"></p></article>
+        <button id="restart-button" class="primary-button">Nouvelle situation <span aria-hidden="true">→</span></button>
+      </section>
+
+      <div class="alert" id="alert" role="alert" hidden></div>
+    </main>
+    <footer class="footer"><span>SMILE TALK</span><span>EMPATHIE <b>✦</b> SOLUTION</span></footer>
+  </div>
+  <script src="/static/app.js" defer></script>
+</body>
+</html>
