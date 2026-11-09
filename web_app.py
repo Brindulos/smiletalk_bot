@@ -41,6 +41,10 @@ STAGE_DONE = "done"
 
 SESSION_TTL = 2 * 3600
 MAX_EVALUATIONS_PER_HOUR = 30
+MAX_EVALUATIONS_PER_DAY = 500
+MAX_LOGIN_FAILURES = 12
+_login_failures = {}
+_global_evaluations = []
 MAX_ANSWER_LENGTH = 1800
 _store = {}
 _lock = threading.RLock()
@@ -51,6 +55,10 @@ def _cleanup():
     for key in list(_store):
         if now - _store[key]["updated"] > SESSION_TTL:
             del _store[key]
+
+
+def _login_attempt_key():
+    return request.remote_addr or "unknown"
 
 
 def _authorized():
@@ -121,8 +129,16 @@ def login():
     candidate = data.get("code", "")
     if not isinstance(candidate, str) or len(candidate) > 150:
         return _error("Code invalide.")
-    if not hmac.compare_digest(candidate, ACCESS_CODE):
-        return _error("Ce code d'accès n'est pas reconnu.", 403)
+    key = _login_attempt_key()
+    with _lock:
+        now = time.monotonic()
+        _login_failures[key] = [t for t in _login_failures.get(key, []) if now - t < 900]
+        if len(_login_failures[key]) >= MAX_LOGIN_FAILURES:
+            return _error("Trop de tentatives. Réessaie dans 15 minutes.", 429)
+        if not hmac.compare_digest(candidate, ACCESS_CODE):
+            _login_failures[key].append(now)
+            return _error("Ce code d'accès n'est pas reconnu.", 403)
+        _login_failures.pop(key, None)
     session.clear()
     session["authorized"] = True
     session["sid"] = secrets.token_urlsafe(24)
@@ -189,6 +205,9 @@ def answer():
         item["evaluations"] = [t for t in item["evaluations"] if now - t < 3600]
         if len(item["evaluations"]) >= MAX_EVALUATIONS_PER_HOUR:
             return _error("Limite horaire atteinte. Reviens un peu plus tard.", 429)
+        _global_evaluations[:] = [t for t in _global_evaluations if now - t < 86400]
+        if len(_global_evaluations) >= MAX_EVALUATIONS_PER_DAY:
+            return _error("Les entraînements sont momentanément limités. Réessaie demain.", 429)
         item["stage"] = STAGE_PROCESSING
         item["second_answer"] = value
         first = item["first_answer"]
@@ -213,6 +232,7 @@ def answer():
             return _error("Une nouvelle situation a été lancée entre-temps.", 409)
         item["result"] = {"feedback": feedback, "example": exemple, "score": score}
         item["evaluations"].append(time.monotonic())
+        _global_evaluations.append(time.monotonic())
         item["stage"] = STAGE_DONE
         item["updated"] = time.monotonic()
         return jsonify(_state_payload(item))
